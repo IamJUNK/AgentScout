@@ -1,0 +1,23 @@
+[project]
+name = "agent-scout"
+version = "0.1.0"
+description = "Lightweight research agent with traces and offline evaluation"
+requires-python = ">=3.11"
+dynamic = ["dependencies"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools]
+py-modules = ["config", "app"]
+
+[tool.setuptools.packages.find]
+include = ["agent*", "models*", "tools*", "storage*", "observability*", "evals*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

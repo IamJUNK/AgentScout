@@ -1,0 +1,18 @@
+[
+  {"id":"eval-001","input":"比较 LangGraph 和 CrewAI 的优缺点","expected_keywords":["workflow","multi-agent","state","orchestration"],"required_source_count":2},
+  {"id":"eval-002","input":"比较 LangGraph、CrewAI 和 AutoGen 的适用场景","expected_keywords":["LangGraph","CrewAI","AutoGen","multi-agent"],"required_source_count":3},
+  {"id":"eval-003","input":"LangGraph 如何实现持久化和人工审批？","expected_keywords":["checkpointing","persistence","human-in-the-loop","state"],"required_source_count":2},
+  {"id":"eval-004","input":"CrewAI 多 Agent 团队如何控制成本？","expected_keywords":["delegation","cost","coordination","evaluation"],"required_source_count":2},
+  {"id":"eval-005","input":"AutoGen 的消息机制和终止条件","expected_keywords":["asynchronous","messages","termination","latency"],"required_source_count":2},
+  {"id":"eval-006","input":"AI Agent 实习生 JD：要求 Python、RAG、模型 API；负责 Agent 评测和调试","expected_keywords":["Python","RAG","testing","debugging"],"required_source_count":2},
+  {"id":"eval-007","input":"AI Agent 云端工具调用有哪些安全风险？","expected_keywords":["prompt injection","least privilege","validation","API keys"],"required_source_count":2},
+  {"id":"eval-008","input":"如何设计 AI Agent 离线 evaluation 和 LLM Judge？","expected_keywords":["dataset","accuracy","bias","latency"],"required_source_count":2},
+  {"id":"eval-009","input":"如何构建 RAG 检索系统并评估质量？","expected_keywords":["embedding","reranking","chunking","groundedness"],"required_source_count":2},
+  {"id":"eval-010","input":"AgentScout 使用 SQLite 和 Streamlit 的优势与限制","expected_keywords":["SQLite","single-user","transactions","Streamlit"],"required_source_count":2},
+  {"id":"eval-011","input":"HTTP 网页抓取失败时如何降级？","expected_keywords":["timeouts","cache","snippets","deduplicate"],"required_source_count":2},
+  {"id":"eval-012","input":"AI Agent 项目如何记录 trace 和 token cost？","expected_keywords":["trace","token","cost","observability"],"required_source_count":2},
+  {"id":"eval-013","input":"Streamlit session state 如何保留研究结果？","expected_keywords":["session state","reruns","dashboard","duplicate"],"required_source_count":2},
+  {"id":"eval-014","input":"多 Agent 系统如何使用 JSON structured output？","expected_keywords":["JSON","schemas","validation","tools"],"required_source_count":2},
+  {"id":"eval-015","input":"AI Agent 实习项目作品集需要什么技能？岗位要求 Python 和 API 集成","expected_keywords":["portfolio","Python","integration","testing"],"required_source_count":2},
+  {"id":"eval-016","input":"如何解释 LLM Judge 评分的可靠性？","expected_keywords":["bias","human review","deterministic","evaluation"],"required_source_count":2}
+]

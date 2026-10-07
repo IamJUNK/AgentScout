@@ -1,0 +1,324 @@
+{
+  "created_at": "2026-10-07T11:52:56.173979+00:00",
+  "mock": true,
+  "variant": "baseline",
+  "model": "local-rules",
+  "summary": {
+    "task_count": 16,
+    "completion_rate": 0.9375,
+    "avg_keyword_recall": 0.984375,
+    "avg_citation_coverage": 0.4,
+    "avg_source_count": 2,
+    "avg_latency_ms": 22,
+    "avg_cost": 0.0,
+    "failed_tasks": 1
+  },
+  "results": [
+    {
+      "task_id": "eval-001",
+      "run_id": "91935dc2-bd72-42be-8ca1-b76774d37e0a",
+      "completed": true,
+      "keyword_recall": 1.0,
+      "citation_coverage": 0.4,
+      "source_count": 2,
+      "latency_ms": 24,
+      "cost": 0.0,
+      "tokens": 0,
+      "failure_reasons": [],
+      "input": "比较 LangGraph 和 CrewAI 的优缺点",
+      "expected_keywords": [
+        "workflow",
+        "multi-agent",
+        "state",
+        "orchestration"
+      ]
+    },
+    {
+      "task_id": "eval-002",
+      "run_id": "fb25c2f1-e2fd-4e6b-852f-e5abf7de80ea",
+      "completed": false,
+      "keyword_recall": 1.0,
+      "citation_coverage": 0.4,
+      "source_count": 2,
+      "latency_ms": 22,
+      "cost": 0.0,
+      "tokens": 0,
+      "failure_reasons": [
+        "insufficient valid sources"
+      ],
+      "input": "比较 LangGraph、CrewAI 和 AutoGen 的适用场景",
+      "expected_keywords": [
+        "LangGraph",
+        "CrewAI",
+        "AutoGen",
+        "multi-agent"
+      ]
+    },
+    {
+      "task_id": "eval-003",
+      "run_id": "389fc85f-96af-4c10-8e67-10c0a84b58bb",
+      "completed": true,
+      "keyword_recall": 1.0,
+      "citation_coverage": 0.4,
+      "source_count": 2,
+      "latency_ms": 20,
+      "cost": 0.0,
+      "tokens": 0,
+      "failure_reasons": [],
+      "input": "LangGraph 如何实现持久化和人工审批？",
+      "expected_keywords": [
+        "checkpointing",
+        "persistence",
+        "human-in-the-loop",
+        "state"
+      ]
+    },
+    {
+      "task_id": "eval-004",
+      "run_id": "ccb74374-6e92-4074-9399-19dc14508b1a",
+      "completed": true,
+      "keyword_recall": 1.0,
+      "citation_coverage": 0.4,
+      "source_count": 2,
+      "latency_ms": 20,
+      "cost": 0.0,
+      "tokens": 0,
+      "failure_reasons": [],
+      "input": "CrewAI 多 Agent 团队如何控制成本？",
+      "expected_keywords": [
+        "delegation",
+        "cost",
+        "coordination",
+        "evaluation"
+      ]
+    },
+    {
+      "task_id": "eval-005",
+      "run_id": "caa9bfe8-d277-4c8e-8a38-58de33a23a32",
+      "completed": true,
+      "keyword_recall": 1.0,
+      "citation_coverage": 0.4,
+      "source_count": 2,
+      "latency_ms": 20,
+      "cost": 0.0,
+      "tokens": 0,
+      "failure_reasons": [],
+      "input": "AutoGen 的消息机制和终止条件",
+      "expected_keywords": [
+        "asynchronous",
+        "messages",
+        "termination",
+        "latency"
+      ]
+    },
+    {
+      "task_id": "eval-006",
+      "run_id": "0cc533ec-7073-459e-aa08-a905c500cb02",
+      "completed": true,
+      "keyword_recall": 1.0,
+      "citation_coverage": 0.4,
+      "source_count": 2,
+      "latency_ms": 21,
+      "cost": 0.0,
+      "tokens": 0,
+      "failure_reasons": [],
+      "input": "AI Agent 实习生 JD：要求 Python、RAG、模型 API；负责 Agent 评测和调试",
+      "expected_keywords": [
+        "Python",
+        "RAG",
+        "testing",
+        "debugging"
+      ]
+    },
+    {
+      "task_id": "eval-007",
+      "run_id": "f4388eae-64ac-4824-a670-8e22ab3d83e6",
+      "completed": true,
+      "keyword_recall": 1.0,
+      "citation_coverage": 0.4,
+      "source_count": 2,
+      "latency_ms": 23,
+      "cost": 0.0,
+      "tokens": 0,
+      "failure_reasons": [],
+      "input": "AI Agent 云端工具调用有哪些安全风险？",
+      "expected_keywords": [
+        "prompt injection",
+        "least privilege",
+        "validation",
+        "API keys"
+      ]
+    },
+    {
+      "task_id": "eval-008",
+      "run_id": "251ab982-781c-4b7c-b1e2-5cf4410673fa",
+      "completed": true,
+      "keyword_recall": 1.0,
+      "citation_coverage": 0.4,
+      "source_count": 2,
+      "latency_ms": 21,
+      "cost": 0.0,
+      "tokens": 0,
+      "failure_reasons": [],
+      "input": "如何设计 AI Agent 离线 evaluation 和 LLM Judge？",
+      "expected_keywords": [
+        "dataset",
+        "accuracy",
+        "bias",
+        "latency"
+      ]
+    },
+    {
+      "task_id": "eval-009",
+      "run_id": "69f4d79e-b9d4-448c-9907-83782e5dd1fb",
+      "completed": true,
+      "keyword_recall": 1.0,
+      "citation_coverage": 0.4,
+      "source_count": 2,
+      "latency_ms": 26,
+      "cost": 0.0,
+      "tokens": 0,
+      "failure_reasons": [],
+      "input": "如何构建 RAG 检索系统并评估质量？",
+      "expected_keywords": [
+        "embedding",
+        "reranking",
+        "chunking",
+        "groundedness"
+      ]
+    },
+    {
+      "task_id": "eval-010",
+      "run_id": "97e1f0da-74d3-4f12-9c60-678bcde94722",
+      "completed": true,
+      "keyword_recall": 1.0,
+      "citation_coverage": 0.4,
+      "source_count": 2,
+      "latency_ms": 22,
+      "cost": 0.0,
+      "tokens": 0,
+      "failure_reasons": [],
+      "input": "AgentScout 使用 SQLite 和 Streamlit 的优势与限制",
+      "expected_keywords": [
+        "SQLite",
+        "single-user",
+        "transactions",
+        "Streamlit"
+      ]
+    },
+    {
+      "task_id": "eval-011",
+      "run_id": "7237c08d-aa94-4561-9ecd-3686c7059abd",
+      "completed": true,
+      "keyword_recall": 1.0,
+      "citation_coverage": 0.4,
+      "source_count": 2,
+      "latency_ms": 21,
+      "cost": 0.0,
+      "tokens": 0,
+      "failure_reasons": [],
+      "input": "HTTP 网页抓取失败时如何降级？",
+      "expected_keywords": [
+        "timeouts",
+        "cache",
+        "snippets",
+        "deduplicate"
+      ]
+    },
+    {
+      "task_id": "eval-012",
+      "run_id": "e03af190-3d0e-4658-8d2b-aec1303d65da",
+      "completed": true,
+      "keyword_recall": 0.75,
+      "citation_coverage": 0.4,
+      "source_count": 2,
+      "latency_ms": 22,
+      "cost": 0.0,
+      "tokens": 0,
+      "failure_reasons": [],
+      "input": "AI Agent 项目如何记录 trace 和 token cost？",
+      "expected_keywords": [
+        "trace",
+        "token",
+        "cost",
+        "observability"
+      ]
+    },
+    {
+      "task_id": "eval-013",
+      "run_id": "db350508-b387-4399-b4d3-04b8f2d763a9",
+      "completed": true,
+      "keyword_recall": 1.0,
+      "citation_coverage": 0.4,
+      "source_count": 2,
+      "latency_ms": 22,
+      "cost": 0.0,
+      "tokens": 0,
+      "failure_reasons": [],
+      "input": "Streamlit session state 如何保留研究结果？",
+      "expected_keywords": [
+        "session state",
+        "reruns",
+        "dashboard",
+        "duplicate"
+      ]
+    },
+    {
+      "task_id": "eval-014",
+      "run_id": "b80ada7e-b398-45cf-b4a0-1a07b3c943aa",
+      "completed": true,
+      "keyword_recall": 1.0,
+      "citation_coverage": 0.4,
+      "source_count": 2,
+      "latency_ms": 22,
+      "cost": 0.0,
+      "tokens": 0,
+      "failure_reasons": [],
+      "input": "多 Agent 系统如何使用 JSON structured output？",
+      "expected_keywords": [
+        "JSON",
+        "schemas",
+        "validation",
+        "tools"
+      ]
+    },
+    {
+      "task_id": "eval-015",
+      "run_id": "1925f960-985c-4478-91a7-9006d7aa6bbc",
+      "completed": true,
+      "keyword_recall": 1.0,
+      "citation_coverage": 0.4,
+      "source_count": 2,
+      "latency_ms": 24,
+      "cost": 0.0,
+      "tokens": 0,
+      "failure_reasons": [],
+      "input": "AI Agent 实习项目作品集需要什么技能？岗位要求 Python 和 API 集成",
+      "expected_keywords": [
+        "portfolio",
+        "Python",
+        "integration",
+        "testing"
+      ]
+    },
+    {
+      "task_id": "eval-016",
+      "run_id": "cf17a973-7bb2-4e3a-a8d3-c0cbeba194d2",
+      "completed": true,
+      "keyword_recall": 1.0,
+      "citation_coverage": 0.4,
+      "source_count": 2,
+      "latency_ms": 22,
+      "cost": 0.0,
+      "tokens": 0,
+      "failure_reasons": [],
+      "input": "如何解释 LLM Judge 评分的可靠性？",
+      "expected_keywords": [
+        "bias",
+        "human review",
+        "deterministic",
+        "evaluation"
+      ]
+    }
+  ]
+}
