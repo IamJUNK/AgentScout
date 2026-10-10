@@ -19,20 +19,22 @@ def run_evaluation(*, limit: int = 10, mock: bool = True, variant: str = "struct
     tasks, rows = load_dataset()[:max(1, min(limit, 20))], []
     for index, task in enumerate(tasks):
         started = time.perf_counter()
-        run = run_research(task["input"], mock=mock, model=model, prompt_variant=variant, settings=settings, store=store)
-        if judge:
-            attach_judge(run, task["input"], settings, model)
+        run = run_research(task["input"], supplied_text=task.get("supplied_text", ""), mock=mock, model=model, prompt_variant=variant, settings=settings, store=store)
+        review = attach_judge(run, task["input"], settings, model, store=store) if judge else None
         row = evaluate_run(run, task)
         if judge:
-            row["judge"], row["judge_usage"] = run.get("judge"), run.get("judge_usage")
+            row["review"] = review
         row["latency_ms"] = int((time.perf_counter() - started) * 1000)
-        row.update(input=task["input"], expected_keywords=task["expected_keywords"])
+        row.update(input=task["input"], expected_keywords=task.get("expected_keywords", []))
+        expected_status = task.get("expected_mock_status") if mock else None
+        if expected_status:
+            row.update(expected_status=expected_status, expected_behavior_ok=run["status"] == expected_status)
         run["evaluation_metrics"] = row
         store.save_run(run)
         rows.append(row)
         if on_progress:
             on_progress(index + 1, len(tasks))
-    return {"created_at": utc_now(), "mock": mock, "variant": variant, "model": model or settings.llm_model or "local-rules", "summary": summarize(rows), "results": rows, "runs": [store.get_run(row["run_id"]) for row in rows]}
+    return {"schema_version": 2, "created_at": utc_now(), "mock": mock, "variant": variant, "model": "local-rules" if mock else (model or settings.llm_model or "local-rules"), "settings": settings.model_dump(), "summary": summarize(rows), "results": rows, "runs": [store.get_run(row["run_id"]) for row in rows]}
 
 def main():
     parser = argparse.ArgumentParser()

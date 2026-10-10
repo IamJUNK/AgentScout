@@ -1,18 +1,232 @@
 [
-  {"id":"eval-001","input":"比较 LangGraph 和 CrewAI 的优缺点","expected_keywords":["workflow","multi-agent","state","orchestration"],"required_source_count":2},
-  {"id":"eval-002","input":"比较 LangGraph、CrewAI 和 AutoGen 的适用场景","expected_keywords":["LangGraph","CrewAI","AutoGen","multi-agent"],"required_source_count":3},
-  {"id":"eval-003","input":"LangGraph 如何实现持久化和人工审批？","expected_keywords":["checkpointing","persistence","human-in-the-loop","state"],"required_source_count":2},
-  {"id":"eval-004","input":"CrewAI 多 Agent 团队如何控制成本？","expected_keywords":["delegation","cost","coordination","evaluation"],"required_source_count":2},
-  {"id":"eval-005","input":"AutoGen 的消息机制和终止条件","expected_keywords":["asynchronous","messages","termination","latency"],"required_source_count":2},
-  {"id":"eval-006","input":"AI Agent 实习生 JD：要求 Python、RAG、模型 API；负责 Agent 评测和调试","expected_keywords":["Python","RAG","testing","debugging"],"required_source_count":2},
-  {"id":"eval-007","input":"AI Agent 云端工具调用有哪些安全风险？","expected_keywords":["prompt injection","least privilege","validation","API keys"],"required_source_count":2},
-  {"id":"eval-008","input":"如何设计 AI Agent 离线 evaluation 和 LLM Judge？","expected_keywords":["dataset","accuracy","bias","latency"],"required_source_count":2},
-  {"id":"eval-009","input":"如何构建 RAG 检索系统并评估质量？","expected_keywords":["embedding","reranking","chunking","groundedness"],"required_source_count":2},
-  {"id":"eval-010","input":"AgentScout 使用 SQLite 和 Streamlit 的优势与限制","expected_keywords":["SQLite","single-user","transactions","Streamlit"],"required_source_count":2},
-  {"id":"eval-011","input":"HTTP 网页抓取失败时如何降级？","expected_keywords":["timeouts","cache","snippets","deduplicate"],"required_source_count":2},
-  {"id":"eval-012","input":"AI Agent 项目如何记录 trace 和 token cost？","expected_keywords":["trace","token","cost","observability"],"required_source_count":2},
-  {"id":"eval-013","input":"Streamlit session state 如何保留研究结果？","expected_keywords":["session state","reruns","dashboard","duplicate"],"required_source_count":2},
-  {"id":"eval-014","input":"多 Agent 系统如何使用 JSON structured output？","expected_keywords":["JSON","schemas","validation","tools"],"required_source_count":2},
-  {"id":"eval-015","input":"AI Agent 实习项目作品集需要什么技能？岗位要求 Python 和 API 集成","expected_keywords":["portfolio","Python","integration","testing"],"required_source_count":2},
-  {"id":"eval-016","input":"如何解释 LLM Judge 评分的可靠性？","expected_keywords":["bias","human review","deterministic","evaluation"],"required_source_count":2}
+  {
+    "id": "eval-001",
+    "input": "比较 LangGraph 和 CrewAI 的优缺点",
+    "expected_keywords": [
+      "workflow",
+      "multi-agent",
+      "state",
+      "orchestration"
+    ],
+    "expected_mock_status": "demo",
+    "category": "research_flow"
+  },
+  {
+    "id": "eval-002",
+    "input": "比较 LangGraph、CrewAI 和 AutoGen 的适用场景",
+    "expected_keywords": [
+      "LangGraph",
+      "CrewAI",
+      "AutoGen",
+      "multi-agent"
+    ],
+    "expected_mock_status": "demo",
+    "category": "research_flow"
+  },
+  {
+    "id": "eval-003",
+    "input": "LangGraph 如何实现持久化和人工审批？",
+    "expected_keywords": [
+      "checkpointing",
+      "persistence",
+      "human-in-the-loop",
+      "state"
+    ],
+    "expected_mock_status": "demo",
+    "category": "research_flow"
+  },
+  {
+    "id": "eval-004",
+    "input": "CrewAI 多 Agent 团队如何控制成本？",
+    "expected_keywords": [
+      "delegation",
+      "cost",
+      "coordination",
+      "evaluation"
+    ],
+    "expected_mock_status": "demo",
+    "category": "research_flow"
+  },
+  {
+    "id": "eval-005",
+    "input": "AutoGen 的消息机制和终止条件",
+    "expected_keywords": [
+      "asynchronous",
+      "messages",
+      "termination",
+      "latency"
+    ],
+    "expected_mock_status": "demo",
+    "category": "research_flow"
+  },
+  {
+    "id": "eval-006",
+    "input": "研究 AI Agent 岗位的技术要求：Python、RAG、模型 API、评测和调试之间有什么联系？不需要求职或面试建议。",
+    "expected_keywords": [
+      "Python",
+      "RAG",
+      "testing",
+      "debugging"
+    ],
+    "expected_mock_status": "demo",
+    "category": "research_flow"
+  },
+  {
+    "id": "eval-007",
+    "input": "AI Agent 云端工具调用有哪些安全风险？",
+    "expected_keywords": [
+      "prompt injection",
+      "least privilege",
+      "validation",
+      "API keys"
+    ],
+    "expected_mock_status": "demo",
+    "category": "research_flow"
+  },
+  {
+    "id": "eval-008",
+    "input": "如何设计 AI Agent 离线 evaluation 和 LLM Judge？",
+    "expected_keywords": [
+      "dataset",
+      "accuracy",
+      "bias",
+      "latency"
+    ],
+    "expected_mock_status": "demo",
+    "category": "research_flow"
+  },
+  {
+    "id": "eval-009",
+    "input": "如何构建 RAG 检索系统并评估质量？",
+    "expected_keywords": [
+      "embedding",
+      "reranking",
+      "chunking",
+      "groundedness"
+    ],
+    "expected_mock_status": "demo",
+    "category": "research_flow"
+  },
+  {
+    "id": "eval-010",
+    "input": "AgentScout 使用 SQLite 和 Streamlit 的优势与限制",
+    "expected_keywords": [
+      "SQLite",
+      "single-user",
+      "transactions",
+      "Streamlit"
+    ],
+    "expected_mock_status": "demo",
+    "category": "research_flow"
+  },
+  {
+    "id": "eval-011",
+    "input": "HTTP 网页抓取失败时如何降级？",
+    "expected_keywords": [
+      "timeouts",
+      "cache",
+      "snippets",
+      "deduplicate"
+    ],
+    "expected_mock_status": "demo",
+    "category": "research_flow"
+  },
+  {
+    "id": "eval-012",
+    "input": "AI Agent 项目如何记录 trace 和 token cost？",
+    "expected_keywords": [
+      "trace",
+      "token",
+      "cost",
+      "observability"
+    ],
+    "expected_mock_status": "demo",
+    "category": "research_flow"
+  },
+  {
+    "id": "eval-013",
+    "input": "Streamlit session state 如何保留研究结果？",
+    "expected_keywords": [
+      "session state",
+      "reruns",
+      "dashboard",
+      "duplicate"
+    ],
+    "expected_mock_status": "demo",
+    "category": "research_flow"
+  },
+  {
+    "id": "eval-014",
+    "input": "多 Agent 系统如何使用 JSON structured output？",
+    "expected_keywords": [
+      "JSON",
+      "schemas",
+      "validation",
+      "tools"
+    ],
+    "expected_mock_status": "demo",
+    "category": "research_flow"
+  },
+  {
+    "id": "eval-015",
+    "input": "研究 AI Agent 工程实践中 Python、API 集成和测试的作用，不提供作品集或求职建议。",
+    "expected_keywords": [
+      "Python",
+      "integration",
+      "testing"
+    ],
+    "expected_mock_status": "demo",
+    "category": "research_flow"
+  },
+  {
+    "id": "eval-016",
+    "input": "如何解释 LLM Judge 评分的可靠性？",
+    "expected_keywords": [
+      "bias",
+      "human review",
+      "deterministic",
+      "evaluation"
+    ],
+    "expected_mock_status": "demo",
+    "category": "research_flow"
+  },
+  {
+    "id": "eval-017",
+    "input": "火山岩年代测定的误差来源",
+    "expected_keywords": [
+      "同位素",
+      "误差"
+    ],
+    "expected_mock_status": "insufficient_evidence",
+    "category": "out_of_mock_domain"
+  },
+  {
+    "id": "eval-018",
+    "input": "仅根据提供的材料总结，不要联网。",
+    "supplied_text": "海洋调查记录：站点 A 的水温为 18 摄氏度，站点 B 为 21 摄氏度。该材料没有提供采样日期，不能由此推出长期升温趋势。",
+    "expected_keywords": [
+      "18",
+      "21",
+      "日期"
+    ],
+    "expected_mock_status": "demo",
+    "category": "supplied_material_only"
+  },
+  {
+    "id": "eval-019",
+    "input": "仅根据提供的材料分析证据，不要联网。",
+    "expected_keywords": [],
+    "expected_mock_status": "insufficient_evidence",
+    "category": "missing_material"
+  },
+  {
+    "id": "eval-020",
+    "input": "研究截至 2026 年 LangGraph 的持久化机制，明确资料适用版本和未确认事项。",
+    "expected_keywords": [
+      "persistence",
+      "checkpointing"
+    ],
+    "expected_mock_status": "demo",
+    "category": "temporal_scope"
+  }
 ]
