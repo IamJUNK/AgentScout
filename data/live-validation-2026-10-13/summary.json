@@ -1,0 +1,93 @@
+{
+  "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+  "status": "partial",
+  "execution_status": "finished",
+  "success": false,
+  "total_duration_ms": 63235,
+  "token_usage": 15974,
+  "llm_call_count": 4,
+  "search_call_count": 4,
+  "warnings": [
+    "证据评估降级：Model output incomplete: length",
+    "写作未完成，提供资料摘录：Model output incomplete: length"
+  ],
+  "errors": [],
+  "budget_exhausted": true,
+  "stop_reason": "budget_exhausted",
+  "citation_metrics": {
+    "total_sources": 4,
+    "cited_sources": 4,
+    "source_utilization": 1.0,
+    "citation_coverage": 1.0,
+    "claim_count": 12,
+    "attributed_claim_count": 12,
+    "invalid_citations": [
+      "https://www.sqlite.org/wal.html\\: https://www.sqlite.org/wal.html"
+    ],
+    "uncited_claims": []
+  },
+  "report_review": {
+    "task_compliant": false,
+    "complete": false,
+    "supported": false,
+    "issues": [
+      "资料摘录未完成研究答案的语义验证。"
+    ]
+  },
+  "assessment": [
+    {
+      "question_id": "q1",
+      "status": "partial",
+      "evidence_ids": [
+        "E907cc17ac7ca",
+        "E83c1af0983bf",
+        "Ec1955de38ef0",
+        "E0a2c6b7c5940",
+        "E46800e45f479",
+        "E82c49c4b09e9"
+      ],
+      "explanation": "找到词法相关片段，尚未验证能否充分回答问题。",
+      "next_queries": []
+    },
+    {
+      "question_id": "q2",
+      "status": "partial",
+      "evidence_ids": [
+        "E907cc17ac7ca",
+        "E83c1af0983bf",
+        "Ec1955de38ef0",
+        "E0a2c6b7c5940",
+        "E46800e45f479",
+        "E82c49c4b09e9"
+      ],
+      "explanation": "找到词法相关片段，尚未验证能否充分回答问题。",
+      "next_queries": []
+    }
+  ],
+  "documents": [
+    {
+      "url": "https://sqlite.org/forum/forumpost/02f22fd538?t=r",
+      "fetch_status": "success",
+      "fetch_error": null,
+      "download_truncated": false
+    },
+    {
+      "url": "https://sqlite.org/forum/forumpost/4d93f49a04?raw=",
+      "fetch_status": "success",
+      "fetch_error": null,
+      "download_truncated": false
+    },
+    {
+      "url": "https://dev.to/chenyuan20509/sqlite-wal-does-not-mean-unlimited-writers-a-practical-python-playbook-2lkn",
+      "fetch_status": "success",
+      "fetch_error": null,
+      "download_truncated": false
+    },
+    {
+      "url": "https://sqlite.org/forum/forumpost/4d93f49a04?t=h&unf=",
+      "fetch_status": "success",
+      "fetch_error": null,
+      "download_truncated": false
+    }
+  ]
+}

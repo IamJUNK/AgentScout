@@ -1,0 +1,82 @@
+{
+  "run_id": "e9be7f18-b54d-404f-96b3-8b02af65d74e",
+  "status": "needs_review",
+  "execution_status": "finished",
+  "success": false,
+  "total_duration_ms": 32197,
+  "token_usage": 24401,
+  "llm_call_count": 7,
+  "search_call_count": 4,
+  "warnings": [],
+  "errors": [],
+  "budget_exhausted": false,
+  "stop_reason": "evidence_sufficient",
+  "citation_metrics": {
+    "total_sources": 4,
+    "cited_sources": 2,
+    "source_utilization": 0.5,
+    "citation_coverage": 0.3125,
+    "claim_count": 16,
+    "attributed_claim_count": 5,
+    "invalid_citations": [],
+    "uncited_claims": [
+      "**不允许。** SQLite 官方文档明确指出，WAL 模式下同一时刻只能有一个写入者。",
+      "官方原文：",
+      "WAL 带来的并发优势是**读写互不阻塞**，而非多写并发：",
+      "因此，WAL 允许多个**读取者**与一个**写入者**并发，但写入者之间仍是串行的。",
+      "**仍可能发生。** 官方文档专门设有章节说明这一点。",
+      "文档给出的具体场景之一是**最后一个连接关闭时的清理过程**：",
+      "另一个场景是**崩溃恢复**：若最后一个连接崩溃，第一个新连接打开数据库时会启动恢复过程并持有排他锁，此时其他连接查询会得到 SQLITE_BUSY（该段为论坛帖转引官方文档内容）：",
+      "- 两问的核心结论均来自 SQLite 官方文档页面 `sqlite.org/wal.html`（证据 E2d66cd6a9320、E07344e57d9ec、Eb6313e658b8e），可直接支撑回答。",
+      "- 恢复场景的原文（E1fd73a7fb547）来自 SQLite 用户论坛帖子，该帖转引了官方文档内容，**并非直接抓取自官方文档页面**；其表述与官方文档一致，但严格来说属于二手转引，建议以官方 `wal.html` 原文为准。",
+      "- 证据中未包含官方文档对 SQLITE_BUSY 全部触发条件的完整列举，上述仅为文档明确提及的部分场景；实际应用中还可能存在其他边界情况，本回答未作穷尽性断言。"
+    ]
+  },
+  "report_review": {
+    "task_compliant": true,
+    "complete": true,
+    "supported": true,
+    "issues": []
+  },
+  "assessment": [
+    {
+      "question_id": "q1",
+      "status": "supported",
+      "evidence_ids": [
+        "E2d66cd6a9320",
+        "E07344e57d9ec",
+        "E1fd73a7fb547",
+        "Eb6313e658b8e"
+      ],
+      "explanation": "官方文档片段直接回答两问：E2d66cd6a9320 明确“there can only be one writer at a time”，说明 WAL 不允许多个写入者同时写入；E07344e57d9ec 与 E2d66cd6a9320 说明 WAL 下查询仍可能返回 SQLITE_BUSY，E1fd73a7fb547 引用官方文档说明恢复期间持有排他锁会导致 SQLITE_BUSY。证据来自 sqlite.org/wal.html 官方页面，足以分别作答并引用原文。",
+      "next_queries": [],
+      "temporal_applicability": "not_applicable"
+    }
+  ],
+  "documents": [
+    {
+      "url": "https://sqlite.org/forum/forumpost/c4dbf6ca17",
+      "fetch_status": "success",
+      "fetch_error": null,
+      "download_truncated": false
+    },
+    {
+      "url": "https://sqlite.org/forum/info/6f595f12db2e993d90b5faea9ec46bdbc6770373f8c587aa72836181a63039ba",
+      "fetch_status": "success",
+      "fetch_error": null,
+      "download_truncated": false
+    },
+    {
+      "url": "https://www.sqlite.org/wal.html",
+      "fetch_status": "success",
+      "fetch_error": null,
+      "download_truncated": false
+    },
+    {
+      "url": "https://sqlite.org/forum/forumpost/4d93f49a04?t=h&unf=",
+      "fetch_status": "success",
+      "fetch_error": null,
+      "download_truncated": false
+    }
+  ]
+}

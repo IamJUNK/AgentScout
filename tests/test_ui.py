@@ -1,5 +1,14 @@
 from pathlib import Path
+import pytest
 from streamlit.testing.v1 import AppTest
+from config import Settings
+
+
+@pytest.fixture(autouse=True)
+def isolate_ui_settings(monkeypatch):
+    # Developer credentials and a real-search default must not turn UI tests
+    # into billable network calls.
+    monkeypatch.setattr('config.load_settings', lambda: Settings())
 
 
 def test_streamlit_research_and_evaluation(tmp_path,monkeypatch):

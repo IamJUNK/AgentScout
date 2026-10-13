@@ -1,0 +1,922 @@
+{
+  "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+  "created_at": "2026-10-13T02:04:29.361011+00:00",
+  "started_at": "2026-10-13T02:04:29.361011+00:00",
+  "input_text": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+  "supplied_text": "",
+  "input_type": "research",
+  "topic": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+  "brief": {
+    "original_request": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+    "as_of": "2026-10-13T02:04:29.372149+00:00",
+    "objective": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+    "scope": [
+      "SQLite 官方文档中关于 WAL 模式的说明",
+      "WAL 模式下并发写入语义",
+      "开启 WAL 后 SQLITE_BUSY 的发生条件"
+    ],
+    "constraints": [
+      "仅依据 SQLite 官方文档",
+      "引用原文",
+      "两问分别作答",
+      "以 brief.as_of 2026-10-13 对应的官方文档为准"
+    ],
+    "time_scope": "截至 2026-10-13（as_of）；以 SQLite 官方文档当前内容为准，无历史版本追溯要求",
+    "output_requirements": [
+      "两问分别作答",
+      "每个结论引用 SQLite 官方文档原文",
+      "明确回答 WAL 是否允许多个写入者同时写入",
+      "明确回答开启 WAL 后 SQLITE_BUSY 是否仍可能发生及发生条件"
+    ],
+    "freshness_required": true,
+    "allow_web_research": true
+  },
+  "config": {
+    "mock": false,
+    "search_count": 3,
+    "model": "deepseek-flash",
+    "prompt_variant": "structured",
+    "force_refresh": true,
+    "settings": {
+      "llm_provider": "openai_compatible",
+      "llm_base_url": "https://api.deepseek.com",
+      "llm_model": "deepseek-flash",
+      "search_provider": "tavily",
+      "price_per_million_tokens": 0.0,
+      "llm_timeout_seconds": 45,
+      "max_questions": 2,
+      "max_search_calls": 4,
+      "max_candidates": 30,
+      "max_fetch_pages": 4,
+      "max_rounds": 2,
+      "max_llm_calls": 10,
+      "max_total_tokens": 30000,
+      "max_cost_usd": 0,
+      "research_timeout_seconds": 180,
+      "max_download_bytes": 2000000,
+      "cache_ttl_seconds": 600,
+      "context_token_budget": 12000,
+      "evidence_token_budget": 2500,
+      "plan_max_tokens": 1200,
+      "report_max_tokens": 2000,
+      "review_max_tokens": 1800
+    }
+  },
+  "plan": {
+    "questions": [
+      {
+        "id": "q1",
+        "text": "根据 SQLite 官方文档，WAL 模式是否允许多个写入者同时写入同一数据库？",
+        "queries": [
+          "site:sqlite.org WAL mode multiple writers same time",
+          "SQLite WAL one writer at a time official documentation",
+          "SQLite write-ahead logging multiple writers"
+        ]
+      },
+      {
+        "id": "q2",
+        "text": "根据 SQLite 官方文档，开启 WAL 后 SQLITE_BUSY 是否仍可能发生？在什么情况下发生？",
+        "queries": [
+          "site:sqlite.org WAL SQLITE_BUSY",
+          "SQLite WAL mode SQLITE_BUSY official docs",
+          "SQLite busy handler WAL mode read write contention"
+        ]
+      }
+    ]
+  },
+  "search_results": [
+    {
+      "title": "SQLite User Forum: Using WAL mode with multiple processes",
+      "url": "https://sqlite.org/forum/forumpost/02f22fd538?t=r",
+      "snippet": "and you never have to look back. WAL journal mode supports one writer and many readers at the same time. A second writer will have to wait until the first write transaction is committed or rolled back. More info can be found in the [WAL documentation] : : ~~~ -- Regards, Kees Nuyt ~~~ [...] The documentation at  says that you can start WAL mode using: PRAGMA journal_mode=WAL; If I have multiple processes running against the same file - one process that is just reading it, another one (or more) that are writing to it, how should I use this pragma? If I've run it once in a process, will the other processes automatically pick it up? Do I need to run the pragma before the other processes open their connections to the database file? Does it even matter which process first executes the [...] The documentation at  says that you can start WAL mode using: PRAGMA journal_mode=WAL; If I have multiple processes running against the same file - one process that is just reading it, another one (or more) that are writing to it, how should I use this pragma? If I've run it once in a process, will the other processes automatically pick it up? Do I need to run the pragma before the other processes open their connections to the database file? Does it even matter which process first executes the",
+      "source": "tavily",
+      "source_id": "See52f5283dca",
+      "question_ids": [
+        "q1"
+      ],
+      "queries": [
+        "site:sqlite.org WAL mode multiple writers same time"
+      ],
+      "published_at": null
+    },
+    {
+      "title": "SQLite User Forum: Avoiding SQLITE_BUSY during recovery",
+      "url": "https://sqlite.org/forum/forumpost/4d93f49a04?raw=",
+      "snippet": "says: > The only safe way to remove a WAL file is to open the database file using one of the sqlite3_open() interfaces then immediately close the database using sqlite3_close(). Since removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE_BUSY, bugs willing. (And please correct me if that's wrong!) [...] in WAL mode, according to the documentation: > If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE_BUSY error. I read this to mean that opening the database will trigger the recovery. Also, above, the same document says: > The\nin WAL mode, according to the documentation: > If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE_BUSY error. I read this to mean that opening the database will trigger the recovery. Also, above, the same document says: > The [...] says: > The only safe way to remove a WAL file is to open the database file using one of the sqlite3_open() interfaces then immediately close the database using sqlite3_close(). Since removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE_BUSY, bugs willing. (And please correct me if that's wrong!)",
+      "source": "tavily",
+      "source_id": "Sb0398bb564d8",
+      "question_ids": [
+        "q2"
+      ],
+      "queries": [
+        "site:sqlite.org WAL SQLITE_BUSY",
+        "SQLite WAL mode SQLITE_BUSY official docs"
+      ],
+      "published_at": null
+    },
+    {
+      "title": "SQLite WAL Does Not Mean Unlimited Writers: A Practical Python Playbook - DEV Community",
+      "url": "https://dev.to/chenyuan20509/sqlite-wal-does-not-mean-unlimited-writers-a-practical-python-playbook-2lkn",
+      "snippet": "SQLite's official WAL documentation is precise: readers and a writer can operate at the same time, but there can still be only one writer at a time. This article builds a compact Python pattern around that reality. It covers transaction boundaries, connection lifetimes, bounded retries, crash-safe work identities, and checkpoint monitoring. The examples are illustrative recipes, not benchmarks; measure them under your own workload.\n\n## The lock is a symptom of transaction design [...] Do not casually put a WAL database on a network file share. SQLite's documentation says WAL depends on same-host shared-memory mechanisms, so it is not a solution for multiple hosts sharing one database file.\n\n## Make the write atomic, short, and safe to retry [...] If your application streams a query result for minutes, keeps a cursor alive across an external request, or runs a long analytics transaction, the WAL may grow. That can affect read performance and disk usage. The documentation describes the reader end mark and the resulting checkpoint limitations in detail.\n\nA simple operational inspection uses the built-in checkpoint PRAGMA:",
+      "source": "tavily",
+      "source_id": "S1a3f0c8e2384",
+      "question_ids": [
+        "q1"
+      ],
+      "queries": [
+        "SQLite WAL one writer at a time official documentation"
+      ],
+      "published_at": null
+    },
+    {
+      "title": "SQLite User Forum: Using WAL mode with multiple processes",
+      "url": "https://sqlite.org/forum/forumpost/c4dbf6ca17?unf=",
+      "snippet": "and you never have to look back. WAL journal mode supports one writer and many readers at the same time. A second writer will have to wait until the first write transaction is committed or rolled back. More info can be found in the [WAL documentation] : : ~~~ -- Regards, Kees Nuyt ~~~ [...] The documentation at  says that you can start WAL mode using: PRAGMA journal_mode=WAL; If I have multiple processes running against the same file - one process that is just reading it, another one (or more) that are writing to it, how should I use this pragma? If I've run it once in a process, will the other processes automatically pick it up? Do I need to run the pragma before the other processes open their connections to the database file? Does it even matter which process first executes the",
+      "source": "tavily",
+      "source_id": "S67faec3d22c3",
+      "question_ids": [
+        "q1"
+      ],
+      "queries": [
+        "site:sqlite.org WAL mode multiple writers same time"
+      ],
+      "published_at": null
+    },
+    {
+      "title": "SQLite User Forum: Avoiding SQLITE_BUSY during recovery",
+      "url": "https://sqlite.org/forum/forumpost/4d93f49a04?t=h&unf=",
+      "snippet": "says: > The only safe way to remove a WAL file is to open the database file using one of the sqlite3_open() interfaces then immediately close the database using sqlite3_close(). Since removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE_BUSY, bugs willing. (And please correct me if that's wrong!) [...] in WAL mode, according to the documentation: > If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE_BUSY error. I read this to mean that opening the database will trigger the recovery. Also, above, the same document says: > The [...] We're in a similar boat where we often encounter an `SQLITE_BUSY_RECOVERY` error while connecting to a database. We use the database in WAL mode, and this is the typical errors we get when setting up the connection in our application: ``` sqlite error code (261) - database is locked in \"PRAGMA journal_mode=WAL;\" sqlite error code (261) - database is locked in \"PRAGMA synchronous=1;\" Cannot get model version - SQLITE_BUSY [SQLITE_BUSY_RECOVERY] - SQLITE_BUSY_RECOVERY: database is locked``` (That\nin WAL mode, according to the documentation: > If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE_BUSY error. I read this to mean that opening the database will trigger the recovery. Also, above, the same document says: > The [...] says: > The only safe way to remove a WAL file is to open the database file using one of the sqlite3_open() interfaces then immediately close the database using sqlite3_close(). Since removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE_BUSY, bugs willing. (And please correct me if that's wrong!) [...] The busy timeout mechanism is implemented in terms of busy handlers; the docs go out of their way to tell you that a busy handler only might be called: > The presence of a busy handler does not guarantee that it will be invoked when there is lock contention. Hence, I cannot assume that seeing SQLITE_BUSY is my error if I don't manage locking myself - in fact, it's the opposite, as it's only if I manage locking myself that seeing SQLITE_BUSY is a sure sign that I've gone wrong somehow! So,",
+      "source": "tavily",
+      "source_id": "Sc0c570a7d14f",
+      "question_ids": [
+        "q2"
+      ],
+      "queries": [
+        "site:sqlite.org WAL SQLITE_BUSY",
+        "SQLite WAL mode SQLITE_BUSY official docs"
+      ],
+      "published_at": null
+    },
+    {
+      "title": "SQLite User Forum: Using WAL mode with multiple processes",
+      "url": "https://sqlite.org/forum/forumpost/c4dbf6ca17",
+      "snippet": "WAL journal mode supports one writer and many readers at the same time. A second writer will have to wait until the first write transaction is committed or rolled back. More info can be found in the WAL documentation\n\n```\n-- Regards, Kees Nuyt \n```\n\n### (3) By J. King (jking) on 2020-08-10 01:58:28 in reply to 2 (/forum/forumpost/57a83dda270e71c6) (/forum/forumpost/57a83dda270e71c6?raw)\n\nThat doesn't answer the question that was posed, though. The WAL documentation does however state: [...] # SQLite User Forum\n\nUsing WAL mode with multiple processes\n\n# Using WAL mode with multiple processes\n\n### (1.1) By Simon Willison (simonw) on 2020-08-09 20:59:01 edited from 1.0 (/forum/forumpost/c4dbf6ca17cb1e75?raw)\n\nThe documentation at  says that you can start WAL mode using:\n\n```\nPRAGMA journal_mode=WAL; \n```\n\nIf I have multiple processes running against the same file - one process that is just reading it, another one (or more) that are writing to it, how should I use this pragma?",
+      "source": "tavily",
+      "source_id": "S6f943ee7b330",
+      "question_ids": [
+        "q1"
+      ],
+      "queries": [
+        "SQLite WAL one writer at a time official documentation"
+      ],
+      "published_at": null
+    },
+    {
+      "title": "SQLite User Forum: Using WAL mode with multiple processes",
+      "url": "https://sqlite.org/forum/forumpost/c95e4286e5?unf=&hist=",
+      "snippet": "and you never have to look back. WAL journal mode supports one writer and many readers at the same time. A second writer will have to wait until the first write transaction is committed or rolled back. More info can be found in the [WAL documentation] : : ~~~ -- Regards, Kees Nuyt ~~~ [...] The documentation at  says that you can start WAL mode using: PRAGMA journal_mode=WAL; If I have multiple processes running against the same file - one process that is just reading it, another one (or more) that are writing to it, how should I use this pragma? If I've run it once in a process, will the other processes automatically pick it up? Do I need to run the pragma before the other processes open their connections to the database file? Does it even matter which process first executes the [...] The documentation at  says that you can start WAL mode using: PRAGMA journal_mode=WAL; If I have multiple processes running against the same file - one process that is just reading it, another one (or more) that are writing to it, how should I use this pragma? If I've run it once in a process, will the other processes automatically pick it up? Do I need to run the pragma before the other processes open their connections to the database file? Does it even matter which process first executes the",
+      "source": "tavily",
+      "source_id": "S92a9bfffcbf7",
+      "question_ids": [
+        "q1"
+      ],
+      "queries": [
+        "site:sqlite.org WAL mode multiple writers same time"
+      ],
+      "published_at": null
+    },
+    {
+      "title": "SQLite User Forum: PRAGMA wal_checkpoint(RESTART) unexpectedly returning SQLITE_BUSY immediately",
+      "url": "https://sqlite.org/forum/forumpost/6a66501e4df030ae?t=h&unf=",
+      "snippet": "Hello, I have a busy, very concurrent SQLite database: 36 connections open from the same process, about 1000 writes per second. As is apparently expected, the WAL file is growing without bound. To counter this, I am attempting to deliberately insert a periodic \"stop-the-world\" style event by calling: PRAGMA wal_checkpoint(RESTART); As I understand it, this will grab an exclusive lock, invoking the busy handler. All of these connections are configured with a busy_timeout of 10 seconds. But the [...] operation at the same time, the lock cannot be obtained and SQLITE_BUSY is returned. Even if there is a busy-handler configured, it will not be invoked in this case. Thank you Dan! [...] 10 seconds. But the `PRAGMA wal_checkpoint(RESTART)` returns busy within a microsecond. Similarly, `sqlite3_wal_checkpoint_v2` returns `SQLITE_BUSY` within a microsecond. Am I misunderstanding the documentation of sqlite3_wal_checkpoint? Thank you, David",
+      "source": "tavily",
+      "source_id": "Sba4054fc8225",
+      "question_ids": [
+        "q2"
+      ],
+      "queries": [
+        "site:sqlite.org WAL SQLITE_BUSY"
+      ],
+      "published_at": null
+    },
+    {
+      "title": "Runnable SQLite Docs: WAL & Concurrency | Coddy",
+      "url": "https://coddy.tech/docs/sqlite/wal-mode-and-concurrency",
+      "snippet": "No - SQLite still serializes writes. Only one writer can hold the write lock at a time. What WAL does change is that readers no longer block the writer, and the writer no longer blocks readers. For most apps that's the bottleneck that mattered.\n\nWhat are the -wal and -shm files? [...] WAL stands for write-ahead logging. Instead of writing changes directly into the main database file and using a rollback journal to undo them on failure, SQLite appends changes to a separate `-wal` file and periodically merges them back. The big payoff is concurrency: readers and a writer can work at the same time without blocking each other.\n\nHow do I enable WAL mode in SQLite? [...] The result: a writer and any number of readers can be active at the same moment. Each reader sees a consistent snapshot from when its transaction began, and the writer is busy adding to the WAL without touching what the readers are looking at.\n\n```\nPRAGMA journal_mode=WAL;\n```",
+      "source": "tavily",
+      "source_id": "S4c6a0432b74d",
+      "question_ids": [
+        "q1"
+      ],
+      "queries": [
+        "SQLite WAL one writer at a time official documentation"
+      ],
+      "published_at": null
+    },
+    {
+      "title": "Handling SQLITE_BUSY During BEGIN IMMEDIATE in Rollback Journal Mode - SQLite Help Docs",
+      "url": "https://sqlite.work/handling-sqlite_busy-during-begin-immediate-in-rollback-journal-mode",
+      "snippet": "The busy handler is a callback function registered via `sqlite3_busy_handler()` or `PRAGMA busy_timeout`. It dictates how long a connection should wait before retrying a failed lock acquisition. However, SQLite’s internal logic may bypass the busy handler in scenarios deemed deadlock-prone. For example, if a connection holds a SHARED lock and attempts to escalate to RESERVED while another connection holds RESERVED, SQLite may return SQLITE\\_BUSY immediately instead of invoking the busy handler. [...] The SQLITE\\_BUSY error occurs when a database connection cannot acquire a required lock due to contention with other connections. This error is particularly common in scenarios involving concurrent read/write operations. SQLite’s busy handler mechanism allows applications to define custom logic (e.g., retry delays) to handle such contention gracefully. However, in rollback journal mode, a critical edge case arises when attempting to upgrade a transaction from a read (SHARED lock) to a write [...] #### Misalignment Between WAL and Rollback Journal Modes\n\nIn WAL mode, `BEGIN IMMEDIATE` acquires a WRITE lock directly, bypassing the SHARED→RESERVED escalation. This eliminates the contention point where the busy handler is bypassed. Applications using WAL mode rarely encounter this issue, leading to confusion when migrating to rollback journal mode.\n\n#### Busy Handler Registration via PRAGMA",
+      "source": "tavily",
+      "source_id": "S3ad813cc1baf",
+      "question_ids": [
+        "q2"
+      ],
+      "queries": [
+        "SQLite WAL mode SQLITE_BUSY official docs"
+      ],
+      "published_at": null
+    }
+  ],
+  "source_documents": [
+    {
+      "title": "SQLite User Forum: Using WAL mode with multiple processes",
+      "url": "https://sqlite.org/forum/forumpost/02f22fd538?t=r",
+      "source_id": "See52f5283dca",
+      "question_ids": [
+        "q1"
+      ],
+      "content": "# SQLite User Forum\nUsing WAL mode with multiple processes\nLogin\nHierarchical\nUnformatted\nHistory\n# Using WAL mode with multiple processes\n### (1)\nBy Simon Willison (simonw ) on 2020-08-09 20:58:26 updated by 1.1 [link]\nThe documentation at https://www.sqlite.org/wal.html says that you can start WAL mode using:\nPRAGMA journal_mode=WAL;\nIf I have multiple processes running against the same file - one process that is just reading it, another one (or more) that are writing to it, how should I use this pragma?\nIf I've run it once in a process, will the other processes automatically pick it up?\nDo I need to run the pragma before the other processes open their connections to the database file?\nDoes it even matter which process first executes the PRAGMA?\nIf my read-only process executes it, will it affect any other processes that attempt to write to that file?\n# Using WAL mode with multiple processes\n### (1.1)\nBy Simon Willison (simonw ) on 2020-08-09 20:59:01 edited from 1.0 [link]\nThe documentation at [https://www.sqlite.org/wal.html](https://www.sqlite.org/wal.html) says that you can start WAL mode using:\nPRAGMA journal_mode=WAL;\nIf I have multiple processes running against the same file - one process that is just reading it, another one (or more) that are writing to it, how should I use this pragma?\nIf I've run it once in a process, will the other processes automatically pick it up?\nDo I need to run the pragma before the other processes open their connections to the database file?\nDoes it even matter which process first executes the PRAGMA?\nIf my read-only process executes it, will it affect any other processes that attempt to write to that file?\n### (2)\nBy Kees Nuyt (knu ) on 2020-08-10 01:43:19 in reply to 1.1 [link]\nThe text for [PRAGMA journal_mode=wal][1]\nsays:\n> The WAL journaling mode uses a write-ahead log instead of a rollback journal to implement transactions. The WAL journaling mode is persistent; after being set it stays in effect across multiple database connections and after closing and reopening the database. A database in WAL journaling mode can only be accessed by SQLite version 3.7.0 (2010-07-21) or later.\nTypically, you set WAL mode during the initial creation of the database, and you never have to look back.\nWAL journal mode supports one writer and many readers at the same time.\nA second writer will have to wait until the first write transaction is committed or rolled back. More info can be found in the [WAL documentation][2]\n[1]:https://sqlite.org/pragma.html#pragma_journal_mode\n[2]:https://sqlite.org/wal.html\n~~~\n--\nRegards,\nKees Nuyt\n~~~\n### (3)\nBy J. King (jking ) on 2020-08-10 01:58:28 in reply to 2 [link]\nThat doesn't answer the question that was posed, though. The WAL documentation does however state:\n> The WAL journal mode will be set on all connections to the same database file if it is set on any one connection.\nPresumably this is done by incrementing the schema version, or via some similar marker in the database header that SQLite checks before preparing a statement.\n### (4)\nBy Simon Willison (simonw ) on 2020-08-10 02:30:24 in reply to 3 updated by 4.1\nThat's the bit that confused me - it sounded like it meant that it would change for connections that are currently open, but I wasn't sure if it would affect connections that open later on.\nIf WAL is actually a persistent proporty of the database file itself then I guess the answer is that any connection can \"turn on\" WAL for a database file and it will stay as a WAL database file for the rest of its life (unless another connection turns it off again).\n### (5)\nBy Richard Damon (RichardDamon ) on 2020-08-10 02:55:31 in reply to 4.0 [link]\nYes, WAL mode is a persistent property of the database file itself.\n### (4.1)\nBy Simon Willison (simonw ) on 2020-08-10 03:02:23 edited from 4.0 in reply to 3 [link]\nThat's the bit that confused me - it sounded like it meant that it would change for connections that are currently open, but I wasn't sure if it would affect connections that open later on.\nIf WAL is actually a persistent property of the database file itself then I guess the answer is that any connection can \"turn on\" WAL for a database file and it will stay as a WAL database file for the rest of its life (unless another connection turns it off again).\n### (6)\nBy Simon Willison (simonw ) on 2020-08-10 03:24:35 in reply to 5 [link]\nThanks, that's exactly what I needed to know! I wrote about this here: [Enabling WAL mode for SQLite database files](https://github.com/simonw/til/blob/master/sqlite/enabling-wal-mode.md)\n### (7)\nBy Richard Damon (RichardDamon ) on 2020-08-10 10:52:48 in reply to 6 [link]\nYes, the issue with the 'Database locked' error is that since WAL mode is a database property and not just a connection property, to set it requires getting a lock to write to the database, and I think it will need an 'Exclusive' lock, so if the database is busy with other connections, it might get locked out from being able to make the change.\n### (8)\nBy anonymous on 2021-06-17 20:30:56 in reply to 2 [link]\nHi\nI tried the test where first connection creates table (in transaction) and second connection read. The test failed showing second connection failed to read as transaction is not complete.\nI tested with following connection string\nvar connectionString = $\"Data Source =test.db;Version=3; Cache = shared; read_uncommitted = true; journal_mode=WAL\";\nhttps://sqlite.org/forum/forumpost/99ffc78cee\nRegards\nAnand\nThis page was generated in about\n0.007s by\nFossil 2.29 [54a0b17bb1] 2026-10-12 08:16:21",
+      "snippet": "and you never have to look back. WAL journal mode supports one writer and many readers at the same time. A second writer will have to wait until the first write transaction is committed or rolled back. More info can be found in the [WAL documentation] : : ~~~ -- Regards, Kees Nuyt ~~~ [...] The documentation at  says that you can start WAL mode using: PRAGMA journal_mode=WAL; If I have multiple processes running against the same file - one process that is just reading it, another one (or more) that are writing to it, how should I use this pragma? If I've run it once in a process, will the other processes automatically pick it up? Do I need to run the pragma before the other processes open their connections to the database file? Does it even matter which process first executes the [...] The documentation at  says that you can start WAL mode using: PRAGMA journal_mode=WAL; If I have multiple processes running against the same file - one process that is just reading it, another one (or more) that are writing to it, how should I use this pragma? If I've run it once in a process, will the other processes automatically pick it up? Do I need to run the pragma before the other processes open their connections to the database file? Does it even matter which process first executes the",
+      "retrieved_at": "2026-10-13T02:04:52.995145+00:00",
+      "published_at": null,
+      "publication_date_source": null,
+      "fetch_status": "success",
+      "fetch_error": null,
+      "content_type": "text/html",
+      "download_truncated": false,
+      "cache_hit": false,
+      "mock": false
+    },
+    {
+      "title": "SQLite User Forum: Avoiding SQLITE_BUSY during recovery",
+      "url": "https://sqlite.org/forum/forumpost/4d93f49a04?raw=",
+      "source_id": "Sb0398bb564d8",
+      "question_ids": [
+        "q2"
+      ],
+      "content": "# SQLite User Forum\nAvoiding SQLITE_BUSY during recovery\nLogin\nChronological\nHierarchical\nUnformatted\nHistory\nHello,\nI am trying to share a SQLite database between several threads & processes, and I would like to avoid ever seeing SQLITE_BUSY by, instead, managing locks & notifications of readiness myself (because handling SQLITE_BUSY requires polling for readiness, which is a pain; avoiding needing to retry transactions is a fringe benefit, but not critical). For the most part, this is going well.\nHowever, there is an annoying thing: SQLite locks the database during crash-recovery, both in rollback-journal mode and WAL mode, and I'm not sure precisely what I should be doing to avoid this.\nI am not attached to the journalling mode and I could use either if it turns out to make a significant difference, but I'd prefer to use rollback journals over WAL because the performance is a little more predictable and I don't have to think about checkpoint starvation.\n## Rollback journals\nIn the rollback case, the [documentation](https://www.sqlite.org/lockingv3.html#hot_journals) says:\n> Before reading from a database file, SQLite always checks to see if that database file has a hot journal. If the file does have a hot journal, then the journal is rolled back before the file is read. In this way, we ensure that the database file is in a consistent state before it is read.\nI went and had a look in the source, and it seems like opening a database *doesn't* count as 'reading from a database' and triggering the recovery, instead being triggered by the first transaction. Hence, if there is a hot journal, what I thought was going to be a read-only transaction could acquire an exclusive lock and other concurrent transactions would then see SQLITE_BUSY. Oops.\nIs that reading correct? If so, is there a recommended pattern for forcing a check for a hot journal (e.g., running some trivial query immediately after opening the database, but not so trivial that SQLite skips reading from the file), so that I can wrap that up in an exclusive lock?\n## WAL\nSomething similar applies in WAL mode, according to the [documentation](https://www.sqlite.org/wal.html#sometimes_queries_return_sqlite_busy_in_wal_mode):\n> If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE_BUSY error.\nI read this to mean that opening the database will trigger the recovery. Also, above, the same document says:\n> The only safe way to remove a WAL file is to open the database file using one of the sqlite3_open() interfaces then immediately close the database using sqlite3_close().\nSince removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE_BUSY, bugs willing. (And please correct me if that's wrong!)\nThis page was generated in about\n0.005s by\nFossil 2.29 [54a0b17bb1] 2026-10-12 08:16:21",
+      "snippet": "says: > The only safe way to remove a WAL file is to open the database file using one of the sqlite3_open() interfaces then immediately close the database using sqlite3_close(). Since removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE_BUSY, bugs willing. (And please correct me if that's wrong!) [...] in WAL mode, according to the documentation: > If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE_BUSY error. I read this to mean that opening the database will trigger the recovery. Also, above, the same document says: > The\nin WAL mode, according to the documentation: > If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE_BUSY error. I read this to mean that opening the database will trigger the recovery. Also, above, the same document says: > The [...] says: > The only safe way to remove a WAL file is to open the database file using one of the sqlite3_open() interfaces then immediately close the database using sqlite3_close(). Since removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE_BUSY, bugs willing. (And please correct me if that's wrong!)",
+      "retrieved_at": "2026-10-13T02:04:54.170234+00:00",
+      "published_at": null,
+      "publication_date_source": null,
+      "fetch_status": "success",
+      "fetch_error": null,
+      "content_type": "text/html",
+      "download_truncated": false,
+      "cache_hit": false,
+      "mock": false
+    },
+    {
+      "title": "SQLite WAL Does Not Mean Unlimited Writers: A Practical Python Playbook - DEV Community",
+      "url": "https://dev.to/chenyuan20509/sqlite-wal-does-not-mean-unlimited-writers-a-practical-python-playbook-2lkn",
+      "source_id": "S1a3f0c8e2384",
+      "question_ids": [
+        "q1"
+      ],
+      "content": "Skip to content\nNavigation menu\nSearch\nPowered by Algolia\nSearch\nLog in\nCreate account\n## DEV Community\nClose\nAdd reaction\nLike\nUnicorn\nExploding Head\nRaised Hands\nFire\nJump to Comments\nSave\nBoost\nPick as gem\nMore...\nCopy link\nCopy link\nCopied to Clipboard\nShare to X\nShare to LinkedIn\nShare to Facebook\nShare to Mastodon\nReport Abuse\nChen Yuan\nPosted on Oct 11\n•\nOriginally published at dispatch-blog.hashnode.dev\n# SQLite WAL Does Not Mean Unlimited Writers: A Practical Python Playbook\n# python\n# sqlite\n# database\n# backend\nA small service can run happily on SQLite for months, then begin throwing database is locked as soon as two background workers start processing jobs. Switching to Write-Ahead Logging (WAL) often improves the situation, but it does not turn SQLite into a multi-writer database. That distinction is the first thing an engineer needs to understand before adding more retries or raising every timeout.\nSQLite's official WAL documentation is precise: readers and a writer can operate at the same time, but there can still be only one writer at a time . This article builds a compact Python pattern around that reality. It covers transaction boundaries, connection lifetimes, bounded retries, crash-safe work identities, and checkpoint monitoring. The examples are illustrative recipes, not benchmarks; measure them under your own workload.\n## The lock is a symptom of transaction design\nIn rollback-journal mode, readers and writers interact through locking that can limit concurrency. WAL changes the commit protocol: writers append to a write-ahead log, while readers use a snapshot of committed data. That reduces interference between ordinary reads and writes. It does not eliminate contention among transactions that need the write lock.\nImagine a worker that starts a transaction, calls an external HTTP service, transforms a payload, and finally updates a row. Another worker arrives during that slow network call. Even if each SQL statement is tiny, the first worker is holding scarce database capacity for the entire external request. WAL cannot make that transaction cheap.\nThe first remedy is often architectural, not a PRAGMA: finish network calls, validation, and CPU-heavy work before acquiring a write transaction. Commit the smallest coherent database change, then release the connection promptly.\nA write transaction should protect a database invariant, not the whole business workflow. If you need to coordinate an expensive workflow across failures, store durable task states and do the expensive work outside the transaction.\n## Initialize WAL once and configure connections deliberately\nA minimal local database can use one-time setup followed by short-lived connections. Python's standard sqlite3 module is sufficient for this example, and SQLite's PRAGMA reference documents the relevant settings.\nimport sqlite3\nfrom pathlib import Path\nDB = Path ( \" jobs.sqlite3 \" )\ndef connect ():\ncon = sqlite3 . connect ( DB , timeout = 5 , isolation_level = None )\ncon . execute ( \" PRAGMA busy_timeout=5000 \" )\ncon . execute ( \" PRAGMA foreign_keys=ON \" )\nreturn con\ndef initialize ():\nwith connect () as con :\nmode = con . execute ( \" PRAGMA journal_mode=WAL \" ). fetchone ()[ 0 ]\nif mode . lower () != \" wal \" :\nraise RuntimeError ( f \" WAL not active: { mode } \" )\ncon . execute ( \"\"\"\nCREATE TABLE IF NOT EXISTS completed_jobs (\njob_key TEXT PRIMARY KEY,\nresult TEXT NOT NULL,\ncompleted_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP\n)\n\"\"\" )\nEnter fullscreen mode\nExit fullscreen mode\nRun initialize() in a controlled setup step before starting the workers. A mode switch is not a request to make during every hot transaction. The example uses autocommit mode so transaction boundaries are explicit later; it does not imply that autocommit alone prevents lock contention.\nSet busy_timeout on each connection. Its purpose is to wait for a conflicting lock to clear instead of failing instantly. Waiting is not free: a worker that waits for five seconds still uses time and capacity. A timeout is a stopgap, not permission to keep transactions open indefinitely.\nDo not casually put a WAL database on a network file share. SQLite's documentation says WAL depends on same-host shared-memory mechanisms, so it is not a solution for multiple hosts sharing one database file.\n## Make the write atomic, short, and safe to retry\nIf a job completion message might be delivered twice, a unique key is part of correctness. A queue acknowledgement, HTTP response, or process exit can be lost after SQLite commits. Retrying blindly should not create duplicate completed-job rows.\nThis example uses a bounded attempt count, an explicit immediate transaction, and a uniqueness constraint. Keep any remote API request outside save_completed .\nimport random\nimport sqlite3\nimport time\ndef save_completed ( job_key : str , result : str ) -> bool :\nfor attempt in range ( 4 ):\ncon = connect ()\ntry :\ncon . execute ( \" BEGIN IMMEDIATE \" )\ncursor = con . execute (\n\"\"\" INSERT INTO completed_jobs (job_key, result)\nVALUES (?, ?)\nON CONFLICT(job_key) DO NOTHING \"\"\" ,\n( job_key , result ),\n)\ncon . execute ( \" COMMIT \" )\nreturn cursor . rowcount == 1\nexcept sqlite3 . OperationalError as exc :\nif con . in_transaction :\ncon . execute ( \" ROLLBACK \" )\nif \" locked \" not in str ( exc ). lower () or attempt == 3 :\nraise\ntime . sleep ( 0.05 * ( 2 ** attempt ) + random . uniform ( 0 , 0.03 ))\nexcept Exception :\nif con . in_transaction :\ncon . execute ( \" ROLLBACK \" )\nraise\nfinally :\ncon . close ()\nraise AssertionError ( \" unreachable \" )\nEnter fullscreen mode\nExit fullscreen mode\nThe return value distinguishes a newly recorded job from one already recorded. The key must describe the logical job , not a randomly generated identifier for each attempt. Otherwise every retry defeats the unique constraint.\nBEGIN IMMEDIATE asks for a write transaction at a predictable point. It can fail or wait when another writer owns the lock; that is expected. The retry policy belongs at this narrow boundary. Do not wrap a non-idempotent payment, email send, or publish operation in the same retry loop just because the database write is retryable.\nThe sleep is small and randomized to reduce synchronized retries. Four attempts are an example, not a recommended universal setting. A busy system may need fewer retries and a real backpressure mechanism; a batch importer can tolerate longer waits.\n## A retry is not a cure for slow readers and checkpoints\nWAL introduces an extra responsibility: checkpointing. A checkpoint transfers committed frames from the WAL back into the main database. SQLite normally triggers automatic checkpoints after a default threshold of about 1,000 pages, but a long-lived read transaction can prevent a checkpoint from progressing past that reader's snapshot.\nIf your application streams a query result for minutes, keeps a cursor alive across an external request, or runs a long analytics transaction, the WAL may grow. That can affect read performance and disk usage. The documentation describes the reader end mark and the resulting checkpoint limitations in detail.\nA simple operational inspection uses the built-in checkpoint PRAGMA:\ndef wal_status ():\nwith connect () as con :\nbusy , log_pages , checkpointed_pages = con . execute (\n\" PRAGMA wal_checkpoint(PASSIVE) \"\n). fetchone ()\nreturn {\n\" busy \" : busy ,\n\" log_pages \" : log_pages ,\n\" checkpointed_pages \" : checkpointed_pages ,\n\" behind \" : log_pages - checkpointed_pages ,\n}\nprint ( wal_status ())\nEnter fullscreen mode\nExit fullscreen mode\nTreat these values as observations, not a magic health score. PASSIVE attempts checkpoint work without waiting aggressively for competing operations; the returned counters help you see whether frames remain. A separate monitoring process, measured during normal load, can reveal whether the backlog repeatedly grows.\nDo not reflexively run TRUNCATE on every request or delete -wal and -shm files while the database is in use. Those files are part of SQLite's live coordination and recovery behavior. Consider more aggressive checkpoints only with a measured operational reason and a controlled maintenance window.\n## Use separate connections and measure the right latency\nSQLite connections have thread-affinity behavior in Python by default. Sharing one connection among unrelated threads without a carefully designed ownership model adds another layer of confusion. A straightforward pattern is one connection per independent operation or one clearly owned connection per worker, closed at a known boundary.\nMeasure the duration of acquiring a transaction, the time between BEGIN and COMMIT , the count of SQLITE_BUSY outcomes, and the size of the WAL backlog. Total request latency alone cannot tell you whether the problem came from a database lock, network call, or slow business logic.\nUse synthetic contention tests before deciding to increase limits in production. Launch several writers that attempt small independent inserts and a reader that scans the table. Then deliberately add a slow transaction and observe how lock waits change. Compare transaction length before and after moving the slow work outside the lock.\nIf writes are still serialized too often, try a single writer queue inside one process, batching independent inserts into short transactions, or moving to a server database when multi-host writes and higher concurrency are genuine requirements. The best choice depends on throughput, failure tolerance, and operational cost rather than database fashion.\n## A small diagnostic checklist\nBefore calling WAL broken, check whether your application has a long-running write transaction, whether every connection actually uses the expected journal mode and busy timeout, and whether any reader holds a snapshot while an external operation runs.\nThen look at duplicate delivery behavior. If a worker crashes after commit but before acknowledging a message, will reprocessing preserve the business invariant? A primary key plus ON CONFLICT DO NOTHING handles the completed-job example, but a richer workflow may require explicit states and reconciliation.\nFinally, examine the deployment topology. WAL belongs to a database file that its participating processes can coordinate on the same machine. If workloads must share mutable state across machines, adding more Python retry logic will not remove that architecture mismatch.\n## What to take into the next incident\nThe sentence \"we already enabled WAL\" is not a diagnosis. WAL makes a specific kind of read/write concurrency better; it does not supply multiple simultaneous writers, infinite transaction capacity, or automatic exactly-once processing.\nThe durable fix is usually a combination of short writes, stable job identities, bounded lock handling, intentional connection ownership, and measured checkpoint behavior. Those choices are less exciting than switching databases, but they are often enough to make a small service predictable again.\nSources: SQLite WAL mode , SQLite PRAGMA reference , and auto-checkpoint behavior .\nOriginally published on Dispatch .\n## Top comments (0)\nSubscribe\nPersonal\nTrusted User\nCreate template\nTemplates let you quickly answer FAQs or store snippets for re-use.\nSubmit\nPreview\nDismiss\nAre you sure you want to hide this comment? It will become hidden in your post, but will still be visible via the comment's permalink .\nHide child comments as well\nConfirm\nFor further actions, you may consider blocking this person and/or reporting abuse\nChen Yuan\nFollow\nIndependent developer building AI-powered tools and content automation pipelines. Writing about MCP, LLMs, and making computers do the boring work.\nLocation\nChina\nEducation\nSelf-taught, 10+ years in software development\nWork\nIndependent Developer & AI Builder\nJoined\nMay 17, 2026\n### More from Chen Yuan\nFix Broken Links in Python Crawlers with urljoin and a Same-Origin Check\n# python\n# webdev\n# tutorial\n# programming\nOpenSSH 10.6 Ships a Compression Side-Channel Fix as a Default: Why It Matters\n# python\n# programming\n# tutorial\n# ai\nLinux on ARM Laptops Is Not a Kernel Problem Anymore\n# python\n# programming\n# tutorial\n# ai\nDEV Community — A space to discuss and keep up software development and manage your software career\nHome\nDEV Challenges\nDEV++\nVideos\nDEV Education Tracks\nDEV Help\nAdvertise on DEV\nOrganization Accounts\nDEV Showcase\nAbout\nContact\nFree Postgres Database\nDEV Shop\nMLH\nCode of Conduct\nPrivacy Policy\nTerms of Use\nBuilt on Forem — the open source software that powers DEV and other inclusive communities.\nMade with love and Ruby on Rails . DEV Community © 2016 - 2026.\nWe're a place where coders share, stay up-to-date and grow their careers.\nLog in\nCreate account",
+      "snippet": "SQLite's official WAL documentation is precise: readers and a writer can operate at the same time, but there can still be only one writer at a time. This article builds a compact Python pattern around that reality. It covers transaction boundaries, connection lifetimes, bounded retries, crash-safe work identities, and checkpoint monitoring. The examples are illustrative recipes, not benchmarks; measure them under your own workload.\n\n## The lock is a symptom of transaction design [...] Do not casually put a WAL database on a network file share. SQLite's documentation says WAL depends on same-host shared-memory mechanisms, so it is not a solution for multiple hosts sharing one database file.\n\n## Make the write atomic, short, and safe to retry [...] If your application streams a query result for minutes, keeps a cursor alive across an external request, or runs a long analytics transaction, the WAL may grow. That can affect read performance and disk usage. The documentation describes the reader end mark and the resulting checkpoint limitations in detail.\n\nA simple operational inspection uses the built-in checkpoint PRAGMA:",
+      "retrieved_at": "2026-10-13T02:05:07.044985+00:00",
+      "published_at": null,
+      "publication_date_source": null,
+      "fetch_status": "success",
+      "fetch_error": null,
+      "content_type": "text/html",
+      "download_truncated": false,
+      "cache_hit": false,
+      "mock": false
+    },
+    {
+      "title": "SQLite User Forum: Avoiding SQLITE_BUSY during recovery",
+      "url": "https://sqlite.org/forum/forumpost/4d93f49a04?t=h&unf=",
+      "source_id": "Sc0c570a7d14f",
+      "question_ids": [
+        "q2"
+      ],
+      "content": "# SQLite User Forum\nAvoiding SQLITE_BUSY during recovery\nLogin\nChronological\nUnformatted\nHistory\n# Avoiding SQLITE_BUSY during recovery\n### (1)\nBy anonymous on 2021-02-22 04:28:57\nHello,\nI am trying to share a SQLite database between several threads & processes, and I would like to avoid ever seeing SQLITE_BUSY by, instead, managing locks & notifications of readiness myself (because handling SQLITE_BUSY requires polling for readiness, which is a pain; avoiding needing to retry transactions is a fringe benefit, but not critical). For the most part, this is going well.\nHowever, there is an annoying thing: SQLite locks the database during crash-recovery, both in rollback-journal mode and WAL mode, and I'm not sure precisely what I should be doing to avoid this.\nI am not attached to the journalling mode and I could use either if it turns out to make a significant difference, but I'd prefer to use rollback journals over WAL because the performance is a little more predictable and I don't have to think about checkpoint starvation.\n## Rollback journals\nIn the rollback case, the [documentation](https://www.sqlite.org/lockingv3.html#hot_journals) says:\n> Before reading from a database file, SQLite always checks to see if that database file has a hot journal. If the file does have a hot journal, then the journal is rolled back before the file is read. In this way, we ensure that the database file is in a consistent state before it is read.\nI went and had a look in the source, and it seems like opening a database *doesn't* count as 'reading from a database' and triggering the recovery, instead being triggered by the first transaction. Hence, if there is a hot journal, what I thought was going to be a read-only transaction could acquire an exclusive lock and other concurrent transactions would then see SQLITE_BUSY. Oops.\nIs that reading correct? If so, is there a recommended pattern for forcing a check for a hot journal (e.g., running some trivial query immediately after opening the database, but not so trivial that SQLite skips reading from the file), so that I can wrap that up in an exclusive lock?\n## WAL\nSomething similar applies in WAL mode, according to the [documentation](https://www.sqlite.org/wal.html#sometimes_queries_return_sqlite_busy_in_wal_mode):\n> If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE_BUSY error.\nI read this to mean that opening the database will trigger the recovery. Also, above, the same document says:\n> The only safe way to remove a WAL file is to open the database file using one of the sqlite3_open() interfaces then immediately close the database using sqlite3_close().\nSince removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE_BUSY, bugs willing. (And please correct me if that's wrong!)\n### (2)\nBy Rowan Worth (sqweek ) on 2021-02-22 04:49:54 in reply to 1 [link]\n> I went and had a look in the source, and it seems like opening a database doesn't count as 'reading from a database' and triggering the recovery, instead being triggered by the first transaction. Hence, if there is a hot journal, what I thought was going to be a read-only transaction could acquire an exclusive lock and other concurrent transactions would then see SQLITE_BUSY. Oops.\nYes that is correct, in rollback-journal mode a read-only transaction will acquire an exclusive lock to write to the database if a hot-journal is detected.\nI would think you could anticipate this pretty easily by (a) forcing a trivial read transaction as an exclusive operation upon opening a database for the first time or (b) treating the initial operation as a write even if it looks like a read-only transaction.\nOf course you will still encounter SQLITE_BUSY if someone is poking around the DB with eg. the sqlite3 command line tool or some other process which isn't aware of your communication protocol :)\n(I won't comment on WAL journal mode as I have no experience there)\n### (3)\nBy Ryan Smith (cuz ) on 2021-02-22 09:18:39 in reply to 1 [link]\nWhy not simply use SQLite's busy handling and set a timeout that is appropriate? I've seen suggestions in the range of several minutes. See [sqlite.org/c3ref/busy_timeout.html for the C API](https://sqlite.org/c3ref/busy_timeout.html) or [sqlite.org/pragma.html#pragma_busy_timeout for the PRAGMA](https://sqlite.org/pragma.html#pragma_busy_timeout) to set said timeout and for more info.\nThat way you never have to \"poll\", never have to deal with any of it in fact, SQLite will do all the concurrency handling and waiting and polling for you, and as a bonus make your DB more robust (with concurrency code that has been proven a million times over).\nYou simply do a query, and it will do it when appropriate and return once it is ready. Zero effort.\nLastly, that way if you *do* get the BUSY signal back, you know something has gone terribly wrong and needs investigation or maintenance.\n*Special note: This all assumes you are accessing the DBs on a local machine (to the SQLite process) and not across a network, for then there are more to consider.*\n### (4)\nBy anonymous on 2021-02-22 10:47:56 in reply to 3 [link]\nThe busy timeout mechanism is implemented in terms of busy handlers; [the docs](https://sqlite.org/c3ref/busy_handler.html) go out of their way to tell you that a busy handler only **might** be called:\n> The presence of a busy handler does not guarantee that it will be invoked when there is lock contention.\nHence, I cannot assume that seeing SQLITE_BUSY is my error if I don't manage locking myself - in fact, it's the opposite, as it's only if I manage locking myself that seeing SQLITE_BUSY is a sure sign that I've gone wrong somehow! So, absent my own locking, it's not 'zero effort': I need to plan for SQLITE_BUSY as a normal return value, and the only sensible course of action seems to be recurrently attempting to open a new transaction. Ick. On the other hand, my application is already arbiting access to database connections between green threads - at the use sites, going from single-connection-per-database to multi-connection is literally only a matter of marking them as read-only or read-write if I manage locking myself.\nEven if I could rely on it, the built-in busy timeout is inherently built on polling, and [the poll intervals are up to 100ms](https://sqlite.org/forum/forumpost/3fd33f0b9b?t=h). I definitely prefer notifications for these sorts of (relatively) long-duration waits, primarily because I expect delivery to be more prompt and to either be fair or offer an interesting fairness-performance tradeoff; writing an event-driven busy handler might be possible, but wouldn't look very different from managing locks myself (and I'm not sure it can be done entirely correctly s.t. SQLITE_BUSY never gets shown to the application).\n(The above point might not be strong enough on its own to justify doing locking myself, as opposed to using the built-in busy timeout; it could well be fine, and probably would be, depending on performance parameters. I want to do it so that I can blissfully ignore SQLITE_BUSY, and any performance win is a nice bonus.)\n### (5)\nBy Sebastien Boisvert (sebastien_boisvert ) on 2024-04-30 15:25:50 in reply to 1 [link]\nWe're in a similar boat where we often encounter an `SQLITE_BUSY_RECOVERY` error while connecting to a database.\nWe use the database in WAL mode, and this is the typical errors we get when setting up the connection in our application:\n```\nsqlite error code (261) - database is locked in \"PRAGMA journal_mode=WAL;\"\nsqlite error code (261) - database is locked in \"PRAGMA synchronous=1;\"\nCannot get model version - SQLITE_BUSY [SQLITE_BUSY_RECOVERY] - SQLITE_BUSY_RECOVERY: database is locked```\n(That last one is a result of trying to get the `user_version` via `\"PRAGMA user_version;\"`)\nI believe these recovery errors occur because the database couldn't be closed cleanly last time (most likely from an application crash).\nI'm wondering if there's any strategy we can use to determine when the database is \"fully recovered and ready\" when doing our database connection setup - could we use something like `sqlite3_wal_checkpoint_v2()` with `SQLITE_CHECKPOINT_FULL` in a loop until an `SQLITE_OK` result is achieved to accomplish that? Or any other strategy?\nOur application code is able to handle normal `SQLITE_BUSY` errors in the course of running queries - it's just this type occurring when setting up the connection that's giving us trouble.\nThis page was generated in about\n0.005s by\nFossil 2.29 [54a0b17bb1] 2026-10-12 08:16:21",
+      "snippet": "says: > The only safe way to remove a WAL file is to open the database file using one of the sqlite3_open() interfaces then immediately close the database using sqlite3_close(). Since removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE_BUSY, bugs willing. (And please correct me if that's wrong!) [...] in WAL mode, according to the documentation: > If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE_BUSY error. I read this to mean that opening the database will trigger the recovery. Also, above, the same document says: > The [...] We're in a similar boat where we often encounter an `SQLITE_BUSY_RECOVERY` error while connecting to a database. We use the database in WAL mode, and this is the typical errors we get when setting up the connection in our application: ``` sqlite error code (261) - database is locked in \"PRAGMA journal_mode=WAL;\" sqlite error code (261) - database is locked in \"PRAGMA synchronous=1;\" Cannot get model version - SQLITE_BUSY [SQLITE_BUSY_RECOVERY] - SQLITE_BUSY_RECOVERY: database is locked``` (That\nin WAL mode, according to the documentation: > If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE_BUSY error. I read this to mean that opening the database will trigger the recovery. Also, above, the same document says: > The [...] says: > The only safe way to remove a WAL file is to open the database file using one of the sqlite3_open() interfaces then immediately close the database using sqlite3_close(). Since removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE_BUSY, bugs willing. (And please correct me if that's wrong!) [...] The busy timeout mechanism is implemented in terms of busy handlers; the docs go out of their way to tell you that a busy handler only might be called: > The presence of a busy handler does not guarantee that it will be invoked when there is lock contention. Hence, I cannot assume that seeing SQLITE_BUSY is my error if I don't manage locking myself - in fact, it's the opposite, as it's only if I manage locking myself that seeing SQLITE_BUSY is a sure sign that I've gone wrong somehow! So,",
+      "retrieved_at": "2026-10-13T02:05:08.350429+00:00",
+      "published_at": null,
+      "publication_date_source": null,
+      "fetch_status": "success",
+      "fetch_error": null,
+      "content_type": "text/html",
+      "download_truncated": false,
+      "cache_hit": false,
+      "mock": false
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E907cc17ac7ca",
+      "source_id": "S1a3f0c8e2384",
+      "url": "https://dev.to/chenyuan20509/sqlite-wal-does-not-mean-unlimited-writers-a-practical-python-playbook-2lkn",
+      "title": "SQLite WAL Does Not Mean Unlimited Writers: A Practical Python Playbook - DEV Community",
+      "text": "SQLite's official WAL documentation is precise: readers and a writer can operate at the same time, but there can still be only one writer at a time. This article builds a compact Python pattern around that reality. It covers transaction boundaries, connection lifetimes, bounded retries, crash-safe work identities, and checkpoint monitoring. The examples are illustrative recipes, not benchmarks; measure them under your own workload.",
+      "section": "",
+      "start": 0,
+      "end": 435,
+      "kind": "snippet",
+      "question_ids": [
+        "q1",
+        "q2"
+      ],
+      "retrieved_at": "2026-10-13T02:05:07.044985+00:00",
+      "published_at": null,
+      "download_truncated": false
+    },
+    {
+      "id": "E83c1af0983bf",
+      "source_id": "Sc0c570a7d14f",
+      "url": "https://sqlite.org/forum/forumpost/4d93f49a04?t=h&unf=",
+      "title": "SQLite User Forum: Avoiding SQLITE_BUSY during recovery",
+      "text": "in WAL mode, according to the documentation: > If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE_BUSY error. I read this to mean that opening the database will trigger the recovery. Also, above, the same document says: > The [...] says: > The only safe way to remove a WAL file is to open the database file using one of the sqlite3_open() interfaces then immediately close the database using sqlite3_close(). Since removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE_BUSY, bugs willing. (And please correct me if that's wrong!) [...] The busy timeout mechanism is implemented in terms of busy handlers; the docs go out of their way to tell you that a busy handler",
+      "section": "",
+      "start": 1471,
+      "end": 2571,
+      "kind": "snippet",
+      "question_ids": [
+        "q1",
+        "q2"
+      ],
+      "retrieved_at": "2026-10-13T02:05:08.350429+00:00",
+      "published_at": null,
+      "download_truncated": false
+    },
+    {
+      "id": "Ec1955de38ef0",
+      "source_id": "See52f5283dca",
+      "url": "https://sqlite.org/forum/forumpost/02f22fd538?t=r",
+      "title": "SQLite User Forum: Using WAL mode with multiple processes",
+      "text": "and you never have to look back. WAL journal mode supports one writer and many readers at the same time. A second writer will have to wait until the first write transaction is committed or rolled back. More info can be found in the [WAL documentation] : : ~~~ -- Regards, Kees Nuyt ~~~ [...] The documentation at  says that you can start WAL mode using: PRAGMA journal_mode=WAL; If I have multiple processes running against the same file - one process that is just reading it, another one (or more) that are writing to it, how should I use this pragma? If I've run it once in a process, will the other processes automatically pick it up? Do I need to run the pragma before the other processes open their connections to the database file? Does it even matter which process first executes the [...] The documentation at  says that you can start WAL mode using: PRAGMA journal_mode=WAL; If I have multiple processes running against the same file - one process that is just reading it, another one (or more) that are writing to it, how should I use this pragma? If I've run it once in a process, will the",
+      "section": "",
+      "start": 0,
+      "end": 1100,
+      "kind": "snippet",
+      "question_ids": [
+        "q1",
+        "q2"
+      ],
+      "retrieved_at": "2026-10-13T02:04:52.995145+00:00",
+      "published_at": null,
+      "download_truncated": false
+    },
+    {
+      "id": "E0a2c6b7c5940",
+      "source_id": "Sb0398bb564d8",
+      "url": "https://sqlite.org/forum/forumpost/4d93f49a04?raw=",
+      "title": "SQLite User Forum: Avoiding SQLITE_BUSY during recovery",
+      "text": "says: > The only safe way to remove a WAL file is to open the database file using one of the sqlite3_open() interfaces then immediately close the database using sqlite3_close(). Since removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE_BUSY, bugs willing. (And please correct me if that's wrong!) [...] in WAL mode, according to the documentation: > If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE_BUSY error. I read this to mean that opening the database will trigger the recovery. Also, above, the same document says: > The",
+      "section": "",
+      "start": 0,
+      "end": 964,
+      "kind": "snippet",
+      "question_ids": [
+        "q1",
+        "q2"
+      ],
+      "retrieved_at": "2026-10-13T02:04:54.170234+00:00",
+      "published_at": null,
+      "download_truncated": false
+    },
+    {
+      "id": "E46800e45f479",
+      "source_id": "See52f5283dca",
+      "url": "https://sqlite.org/forum/forumpost/02f22fd538?t=r",
+      "title": "SQLite User Forum: Using WAL mode with multiple processes",
+      "text": "The documentation at [https://www.sqlite.org/wal.html](https://www.sqlite.org/wal.html) says that you can start WAL mode using:",
+      "section": "(1.1)",
+      "start": 991,
+      "end": 1118,
+      "kind": "body",
+      "question_ids": [
+        "q1",
+        "q2"
+      ],
+      "retrieved_at": "2026-10-13T02:04:52.995145+00:00",
+      "published_at": null,
+      "download_truncated": false
+    },
+    {
+      "id": "E82c49c4b09e9",
+      "source_id": "Sc0c570a7d14f",
+      "url": "https://sqlite.org/forum/forumpost/4d93f49a04?t=h&unf=",
+      "title": "SQLite User Forum: Avoiding SQLITE_BUSY during recovery",
+      "text": "says: > The only safe way to remove a WAL file is to open the database file using one of the sqlite3_open() interfaces then immediately close the database using sqlite3_close(). Since removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE_BUSY, bugs willing. (And please correct me if that's wrong!) [...] in WAL mode, according to the documentation: > If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE_BUSY error. I read this to mean that opening the database will trigger the recovery. Also, above, the same document says: > The [...] We're in a similar boat where we often encounter an `SQLITE_BUSY_RECOVERY` error while connecting to a database. We use the datab",
+      "section": "",
+      "start": 0,
+      "end": 1100,
+      "kind": "snippet",
+      "question_ids": [
+        "q1",
+        "q2"
+      ],
+      "retrieved_at": "2026-10-13T02:05:08.350429+00:00",
+      "published_at": null,
+      "download_truncated": false
+    }
+  ],
+  "evidence_selection": {
+    "scanned_chunks": 377,
+    "selected_chunks": 6,
+    "relevant_chunks": 200,
+    "omitted_relevant_chunks": 194,
+    "estimated_tokens": 2416,
+    "token_budget": 2500,
+    "selection_method": "lexical relevance over all acquired paragraphs; question/source diversity",
+    "selection_is_heuristic": true
+  },
+  "assessment": [
+    {
+      "question_id": "q1",
+      "status": "partial",
+      "evidence_ids": [
+        "E907cc17ac7ca",
+        "E83c1af0983bf",
+        "Ec1955de38ef0",
+        "E0a2c6b7c5940",
+        "E46800e45f479",
+        "E82c49c4b09e9"
+      ],
+      "explanation": "找到词法相关片段，尚未验证能否充分回答问题。",
+      "next_queries": []
+    },
+    {
+      "question_id": "q2",
+      "status": "partial",
+      "evidence_ids": [
+        "E907cc17ac7ca",
+        "E83c1af0983bf",
+        "Ec1955de38ef0",
+        "E0a2c6b7c5940",
+        "E46800e45f479",
+        "E82c49c4b09e9"
+      ],
+      "explanation": "找到词法相关片段，尚未验证能否充分回答问题。",
+      "next_queries": []
+    }
+  ],
+  "round": 2,
+  "searched_queries": [
+    "site:sqlite.org WAL mode multiple writers same time",
+    "site:sqlite.org WAL SQLITE_BUSY",
+    "SQLite WAL one writer at a time official documentation",
+    "SQLite WAL mode SQLITE_BUSY official docs"
+  ],
+  "attempted_urls": [
+    "https://sqlite.org/forum/forumpost/02f22fd538?t=r",
+    "https://sqlite.org/forum/forumpost/4d93f49a04?raw=",
+    "https://dev.to/chenyuan20509/sqlite-wal-does-not-mean-unlimited-writers-a-practical-python-playbook-2lkn",
+    "https://sqlite.org/forum/forumpost/4d93f49a04?t=h&unf="
+  ],
+  "search_counts": {
+    "site:sqlite.org WAL mode multiple writers same time": 3,
+    "site:sqlite.org WAL SQLITE_BUSY": 3,
+    "SQLite WAL one writer at a time official documentation": 3,
+    "SQLite WAL mode SQLITE_BUSY official docs": 3
+  },
+  "next_step": "synthesize_report",
+  "stop_reason": "budget_exhausted",
+  "budget_exhausted": true,
+  "report": "# 研究资料与未解答问题\n\n> 状态：资料摘录，尚未完成研究答案。\n> 研究需求：根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。\n\n> 限制：片段按词法相关性筛选，相关不代表充分支持；日期未知时不能确认时效性。\n\n## 根据 SQLite 官方文档，WAL 模式是否允许多个写入者同时写入同一数据库？\n\n- 搜索摘要，未核实原文，SQLite WAL Does Not Mean Unlimited Writers: A Practical Python Playbook - DEV Community（位置 0–435）：SQLite's official WAL documentation is precise: readers and a writer can operate at the same time, but there can still be only one writer at a time. This article builds a compact Python pattern around that reality. It covers transaction boundaries, connection lifetimes, bounded retries, crash-safe work identities, and checkpoint monitoring. The examples are illustrative recipes, not benchmarks; measure them under your own workload. [证据 E907cc17ac7ca](https://dev.to/chenyuan20509/sqlite-wal-does-not-mean-unlimited-writers-a-practical-python-playbook-2lkn)\n- 搜索摘要，未核实原文，SQLite User Forum: Avoiding SQLITE_BUSY during recovery（位置 1471–2571）：in WAL mode, according to the documentation: \\> If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE\\_BUSY error. I read this to mean that opening the database will trigger the recovery. Also, above, the same document says: \\> The \\[...\\] says: \\> The only safe way to remove a WAL file is to open the database file using one of the sqlite3\\_open() interfaces then immediately close the database using sqlite3\\_close(). Since removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE\\_BUSY, bugs willing. (And please correct me if that's wrong!) \\[...\\] The busy timeout mechanism is implemented in terms of busy handlers; the docs go out of their way to tell you that a busy handler [证据 E83c1af0983bf](https://sqlite.org/forum/forumpost/4d93f49a04?t=h&unf=)\n- 搜索摘要，未核实原文，SQLite User Forum: Using WAL mode with multiple processes（位置 0–1100）：and you never have to look back. WAL journal mode supports one writer and many readers at the same time. A second writer will have to wait until the first write transaction is committed or rolled back. More info can be found in the \\[WAL documentation\\] : : ~~~ -- Regards, Kees Nuyt ~~~ \\[...\\] The documentation at  says that you can start WAL mode using: PRAGMA journal\\_mode=WAL; If I have multiple processes running against the same file - one process that is just reading it, another one (or more) that are writing to it, how should I use this pragma? If I've run it once in a process, will the other processes automatically pick it up? Do I need to run the pragma before the other processes open their connections to the database file? Does it even matter which process first executes the \\[...\\] The documentation at  says that you can start WAL mode using: PRAGMA journal\\_mode=WAL; If I have multiple processes running against the same file - one process that is just reading it, another one (or more) that are writing to it, how should I use this pragma? If I've run it once in a process, will the [证据 Ec1955de38ef0](https://sqlite.org/forum/forumpost/02f22fd538?t=r)\n- 搜索摘要，未核实原文，SQLite User Forum: Avoiding SQLITE_BUSY during recovery（位置 0–964）：says: \\> The only safe way to remove a WAL file is to open the database file using one of the sqlite3\\_open() interfaces then immediately close the database using sqlite3\\_close(). Since removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE\\_BUSY, bugs willing. (And please correct me if that's wrong!) \\[...\\] in WAL mode, according to the documentation: \\> If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE\\_BUSY error. I read this to mean that opening the database will trigger the recovery. Also, above, the same document says: \\> The [证据 E0a2c6b7c5940](https://sqlite.org/forum/forumpost/4d93f49a04?raw=)\n- 正文片段，SQLite User Forum: Using WAL mode with multiple processes（位置 991–1118）：The documentation at \\[https://www.sqlite.org/wal.html\\](https://www.sqlite.org/wal.html) says that you can start WAL mode using: [证据 E46800e45f479](https://sqlite.org/forum/forumpost/02f22fd538?t=r)\n- 搜索摘要，未核实原文，SQLite User Forum: Avoiding SQLITE_BUSY during recovery（位置 0–1100）：says: \\> The only safe way to remove a WAL file is to open the database file using one of the sqlite3\\_open() interfaces then immediately close the database using sqlite3\\_close(). Since removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE\\_BUSY, bugs willing. (And please correct me if that's wrong!) \\[...\\] in WAL mode, according to the documentation: \\> If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE\\_BUSY error. I read this to mean that opening the database will trigger the recovery. Also, above, the same document says: \\> The \\[...\\] We're in a similar boat where we often encounter an `SQLITE\\_BUSY\\_RECOVERY` error while connecting to a database. We use the datab [证据 E82c49c4b09e9](https://sqlite.org/forum/forumpost/4d93f49a04?t=h&unf=)\n> 未解答：找到词法相关片段，尚未验证能否充分回答问题。\n\n## 根据 SQLite 官方文档，开启 WAL 后 SQLITE_BUSY 是否仍可能发生？在什么情况下发生？\n\n- 搜索摘要，未核实原文，SQLite WAL Does Not Mean Unlimited Writers: A Practical Python Playbook - DEV Community（位置 0–435）：SQLite's official WAL documentation is precise: readers and a writer can operate at the same time, but there can still be only one writer at a time. This article builds a compact Python pattern around that reality. It covers transaction boundaries, connection lifetimes, bounded retries, crash-safe work identities, and checkpoint monitoring. The examples are illustrative recipes, not benchmarks; measure them under your own workload. [证据 E907cc17ac7ca](https://dev.to/chenyuan20509/sqlite-wal-does-not-mean-unlimited-writers-a-practical-python-playbook-2lkn)\n- 搜索摘要，未核实原文，SQLite User Forum: Avoiding SQLITE_BUSY during recovery（位置 1471–2571）：in WAL mode, according to the documentation: \\> If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE\\_BUSY error. I read this to mean that opening the database will trigger the recovery. Also, above, the same document says: \\> The \\[...\\] says: \\> The only safe way to remove a WAL file is to open the database file using one of the sqlite3\\_open() interfaces then immediately close the database using sqlite3\\_close(). Since removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE\\_BUSY, bugs willing. (And please correct me if that's wrong!) \\[...\\] The busy timeout mechanism is implemented in terms of busy handlers; the docs go out of their way to tell you that a busy handler [证据 E83c1af0983bf](https://sqlite.org/forum/forumpost/4d93f49a04?t=h&unf=)\n- 搜索摘要，未核实原文，SQLite User Forum: Using WAL mode with multiple processes（位置 0–1100）：and you never have to look back. WAL journal mode supports one writer and many readers at the same time. A second writer will have to wait until the first write transaction is committed or rolled back. More info can be found in the \\[WAL documentation\\] : : ~~~ -- Regards, Kees Nuyt ~~~ \\[...\\] The documentation at  says that you can start WAL mode using: PRAGMA journal\\_mode=WAL; If I have multiple processes running against the same file - one process that is just reading it, another one (or more) that are writing to it, how should I use this pragma? If I've run it once in a process, will the other processes automatically pick it up? Do I need to run the pragma before the other processes open their connections to the database file? Does it even matter which process first executes the \\[...\\] The documentation at  says that you can start WAL mode using: PRAGMA journal\\_mode=WAL; If I have multiple processes running against the same file - one process that is just reading it, another one (or more) that are writing to it, how should I use this pragma? If I've run it once in a process, will the [证据 Ec1955de38ef0](https://sqlite.org/forum/forumpost/02f22fd538?t=r)\n- 搜索摘要，未核实原文，SQLite User Forum: Avoiding SQLITE_BUSY during recovery（位置 0–964）：says: \\> The only safe way to remove a WAL file is to open the database file using one of the sqlite3\\_open() interfaces then immediately close the database using sqlite3\\_close(). Since removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE\\_BUSY, bugs willing. (And please correct me if that's wrong!) \\[...\\] in WAL mode, according to the documentation: \\> If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE\\_BUSY error. I read this to mean that opening the database will trigger the recovery. Also, above, the same document says: \\> The [证据 E0a2c6b7c5940](https://sqlite.org/forum/forumpost/4d93f49a04?raw=)\n- 正文片段，SQLite User Forum: Using WAL mode with multiple processes（位置 991–1118）：The documentation at \\[https://www.sqlite.org/wal.html\\](https://www.sqlite.org/wal.html) says that you can start WAL mode using: [证据 E46800e45f479](https://sqlite.org/forum/forumpost/02f22fd538?t=r)\n- 搜索摘要，未核实原文，SQLite User Forum: Avoiding SQLITE_BUSY during recovery（位置 0–1100）：says: \\> The only safe way to remove a WAL file is to open the database file using one of the sqlite3\\_open() interfaces then immediately close the database using sqlite3\\_close(). Since removing the WAL entails doing any necessary crash recovery, it sounds very much like I will want to wrap opening the database in an exclusive lock in WAL mode, and then things will just work and I'll never see SQLITE\\_BUSY, bugs willing. (And please correct me if that's wrong!) \\[...\\] in WAL mode, according to the documentation: \\> If the last connection to a database crashed, then the first new connection to open the database will start a recovery process. An exclusive lock is held during recovery. So if a third database connection tries to jump in and query while the second connection is running recovery, the third connection will get an SQLITE\\_BUSY error. I read this to mean that opening the database will trigger the recovery. Also, above, the same document says: \\> The \\[...\\] We're in a similar boat where we often encounter an `SQLITE\\_BUSY\\_RECOVERY` error while connecting to a database. We use the datab [证据 E82c49c4b09e9](https://sqlite.org/forum/forumpost/4d93f49a04?t=h&unf=)\n> 未解答：找到词法相关片段，尚未验证能否充分回答问题。\n\n> 预算：本次预算耗尽，缺口不等于不存在答案。",
+  "report_kind": "evidence_digest",
+  "report_review": {
+    "task_compliant": false,
+    "complete": false,
+    "supported": false,
+    "issues": [
+      "资料摘录未完成研究答案的语义验证。"
+    ]
+  },
+  "citation_metrics": {
+    "total_sources": 4,
+    "cited_sources": 4,
+    "source_utilization": 1.0,
+    "citation_coverage": 1.0,
+    "claim_count": 12,
+    "attributed_claim_count": 12,
+    "invalid_citations": [
+      "https://www.sqlite.org/wal.html\\: https://www.sqlite.org/wal.html"
+    ],
+    "uncited_claims": []
+  },
+  "citation_warning": "存在未解决的引用或语义检查问题；不能视为已完成研究。",
+  "duplicate_citation_urls": [
+    "https://dev.to/chenyuan20509/sqlite-wal-does-not-mean-unlimited-writers-a-practical-python-playbook-2lkn",
+    "https://sqlite.org/forum/forumpost/02f22fd538?t=r",
+    "https://sqlite.org/forum/forumpost/4d93f49a04?raw=",
+    "https://sqlite.org/forum/forumpost/4d93f49a04?t=h&unf="
+  ],
+  "status": "partial",
+  "execution_status": "finished",
+  "success": false,
+  "errors": [],
+  "warnings": [
+    "证据评估降级：Model output incomplete: length",
+    "写作未完成，提供资料摘录：Model output incomplete: length"
+  ],
+  "traces": [
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "prepare_research",
+      "event_type": "start",
+      "started_at": "2026-10-13T02:04:29.371151+00:00",
+      "ended_at": null,
+      "duration_ms": null,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "",
+      "error_message": null,
+      "token_usage": null,
+      "estimated_cost": null,
+      "llm_calls": 0,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "prepare_research",
+      "event_type": "success",
+      "started_at": "2026-10-13T02:04:29.371151+00:00",
+      "ended_at": "2026-10-13T02:04:29.372149+00:00",
+      "duration_ms": 1,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "brief: 9; topic: 根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。; input_type: research; plan: 0; search_results: 0; source_documents: 0; evidence: 0; assessment: 0; round: 0; searched_queries: 0; attempted_urls: 0; search_counts: 0",
+      "error_message": null,
+      "token_usage": 0,
+      "estimated_cost": 0.0,
+      "llm_calls": 0,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "plan_research",
+      "event_type": "start",
+      "started_at": "2026-10-13T02:04:29.379610+00:00",
+      "ended_at": null,
+      "duration_ms": null,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "",
+      "error_message": null,
+      "token_usage": null,
+      "estimated_cost": null,
+      "llm_calls": 0,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "plan_research",
+      "event_type": "success",
+      "started_at": "2026-10-13T02:04:29.379610+00:00",
+      "ended_at": "2026-10-13T02:04:35.808954+00:00",
+      "duration_ms": 6429,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "brief: 9; plan: 1",
+      "error_message": null,
+      "token_usage": 1532,
+      "estimated_cost": 0.0,
+      "llm_calls": 1,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "search_sources",
+      "event_type": "start",
+      "started_at": "2026-10-13T02:04:35.816954+00:00",
+      "ended_at": null,
+      "duration_ms": null,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "",
+      "error_message": null,
+      "token_usage": null,
+      "estimated_cost": null,
+      "llm_calls": 0,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "search_sources",
+      "event_type": "success",
+      "started_at": "2026-10-13T02:04:35.816954+00:00",
+      "ended_at": "2026-10-13T02:04:50.913526+00:00",
+      "duration_ms": 15096,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "search_results: 10",
+      "error_message": null,
+      "token_usage": 0,
+      "estimated_cost": 0.0,
+      "llm_calls": 0,
+      "search_calls": 4
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "fetch_pages",
+      "event_type": "start",
+      "started_at": "2026-10-13T02:04:50.928069+00:00",
+      "ended_at": null,
+      "duration_ms": null,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "",
+      "error_message": null,
+      "token_usage": null,
+      "estimated_cost": null,
+      "llm_calls": 0,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "fetch_pages",
+      "event_type": "success",
+      "started_at": "2026-10-13T02:04:50.928069+00:00",
+      "ended_at": "2026-10-13T02:04:54.171271+00:00",
+      "duration_ms": 3244,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "source_documents: 2; fetch_success_rate: 1.0",
+      "error_message": null,
+      "token_usage": 0,
+      "estimated_cost": 0.0,
+      "llm_calls": 0,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "assess_evidence",
+      "event_type": "start",
+      "started_at": "2026-10-13T02:04:54.185334+00:00",
+      "ended_at": null,
+      "duration_ms": null,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "",
+      "error_message": null,
+      "token_usage": null,
+      "estimated_cost": null,
+      "llm_calls": 0,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "assess_evidence",
+      "event_type": "warning",
+      "started_at": "2026-10-13T02:04:54.185334+00:00",
+      "ended_at": "2026-10-13T02:05:06.286572+00:00",
+      "duration_ms": 12101,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "evidence: 8; evidence_selection: 8; assessment: 2",
+      "error_message": null,
+      "token_usage": 4757,
+      "estimated_cost": 0.0,
+      "llm_calls": 1,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "search_sources",
+      "event_type": "start",
+      "started_at": "2026-10-13T02:05:06.299899+00:00",
+      "ended_at": null,
+      "duration_ms": null,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "",
+      "error_message": null,
+      "token_usage": null,
+      "estimated_cost": null,
+      "llm_calls": 0,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "search_sources",
+      "event_type": "success",
+      "started_at": "2026-10-13T02:05:06.299899+00:00",
+      "ended_at": "2026-10-13T02:05:06.299899+00:00",
+      "duration_ms": 0,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "search_results: 10",
+      "error_message": null,
+      "token_usage": 0,
+      "estimated_cost": 0.0,
+      "llm_calls": 0,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "fetch_pages",
+      "event_type": "start",
+      "started_at": "2026-10-13T02:05:06.308942+00:00",
+      "ended_at": null,
+      "duration_ms": null,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "",
+      "error_message": null,
+      "token_usage": null,
+      "estimated_cost": null,
+      "llm_calls": 0,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "fetch_pages",
+      "event_type": "success",
+      "started_at": "2026-10-13T02:05:06.308942+00:00",
+      "ended_at": "2026-10-13T02:05:08.351648+00:00",
+      "duration_ms": 2042,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "source_documents: 4; fetch_success_rate: 1.0",
+      "error_message": null,
+      "token_usage": 0,
+      "estimated_cost": 0.0,
+      "llm_calls": 0,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "assess_evidence",
+      "event_type": "start",
+      "started_at": "2026-10-13T02:05:08.360755+00:00",
+      "ended_at": null,
+      "duration_ms": null,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "",
+      "error_message": null,
+      "token_usage": null,
+      "estimated_cost": null,
+      "llm_calls": 0,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "assess_evidence",
+      "event_type": "success",
+      "started_at": "2026-10-13T02:05:08.360755+00:00",
+      "ended_at": "2026-10-13T02:05:20.019727+00:00",
+      "duration_ms": 11659,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "evidence: 6; evidence_selection: 8; assessment: 2",
+      "error_message": null,
+      "token_usage": 4646,
+      "estimated_cost": 0.0,
+      "llm_calls": 1,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "synthesize_report",
+      "event_type": "start",
+      "started_at": "2026-10-13T02:05:20.029733+00:00",
+      "ended_at": null,
+      "duration_ms": null,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "",
+      "error_message": null,
+      "token_usage": null,
+      "estimated_cost": null,
+      "llm_calls": 0,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "synthesize_report",
+      "event_type": "warning",
+      "started_at": "2026-10-13T02:05:20.029733+00:00",
+      "ended_at": "2026-10-13T02:05:32.559718+00:00",
+      "duration_ms": 12530,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "report: # 研究资料与未解答问题\n\n> 状态：资料摘录，尚未完成研究答案。\n> 研究需求：根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY ; report_kind: evidence_digest",
+      "error_message": null,
+      "token_usage": 5039,
+      "estimated_cost": 0.0,
+      "llm_calls": 1,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "validate_citations",
+      "event_type": "start",
+      "started_at": "2026-10-13T02:05:32.569730+00:00",
+      "ended_at": null,
+      "duration_ms": null,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "",
+      "error_message": null,
+      "token_usage": null,
+      "estimated_cost": null,
+      "llm_calls": 0,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "validate_citations",
+      "event_type": "success",
+      "started_at": "2026-10-13T02:05:32.569730+00:00",
+      "ended_at": "2026-10-13T02:05:32.570730+00:00",
+      "duration_ms": 0,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "citation_metrics: 8; report_review: 4; citation_warning: 存在未解决的引用或语义检查问题；不能视为已完成研究。; duplicate_citation_urls: 4",
+      "error_message": null,
+      "token_usage": 0,
+      "estimated_cost": 0.0,
+      "llm_calls": 0,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "finalize",
+      "event_type": "start",
+      "started_at": "2026-10-13T02:05:32.578729+00:00",
+      "ended_at": null,
+      "duration_ms": null,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "",
+      "error_message": null,
+      "token_usage": null,
+      "estimated_cost": null,
+      "llm_calls": 0,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "finalize",
+      "event_type": "success",
+      "started_at": "2026-10-13T02:05:32.578729+00:00",
+      "ended_at": "2026-10-13T02:05:32.578729+00:00",
+      "duration_ms": 0,
+      "input_summary": "根据 SQLite 官方文档，解释 WAL 是否允许多个写入者同时写入，以及开启 WAL 后 SQLITE_BUSY 是否仍可能发生。两问分别作答，引用原文。",
+      "output_summary": "status: partial; success: False; execution_status: finished",
+      "error_message": null,
+      "token_usage": 0,
+      "estimated_cost": 0.0,
+      "llm_calls": 0,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "persist_run",
+      "event_type": "start",
+      "started_at": "2026-10-13T02:05:32.588248+00:00",
+      "ended_at": null,
+      "duration_ms": null,
+      "input_summary": "",
+      "output_summary": "",
+      "error_message": null,
+      "token_usage": null,
+      "estimated_cost": null,
+      "llm_calls": 0,
+      "search_calls": 0
+    },
+    {
+      "run_id": "e97a5861-d08c-4bbd-88d2-c5d1d19808ea",
+      "node_name": "persist_run",
+      "event_type": "success",
+      "started_at": "2026-10-13T02:05:32.588248+00:00",
+      "ended_at": "2026-10-13T02:05:32.596621+00:00",
+      "duration_ms": 8,
+      "input_summary": "",
+      "output_summary": "persisted: True",
+      "error_message": null,
+      "token_usage": 0,
+      "estimated_cost": 0.0,
+      "llm_calls": 0,
+      "search_calls": 0
+    }
+  ],
+  "node_status": {
+    "prepare_research": "success",
+    "plan_research": "success",
+    "search_sources": "success",
+    "fetch_pages": "success",
+    "assess_evidence": "success",
+    "synthesize_report": "warning",
+    "validate_citations": "success",
+    "finalize": "success",
+    "persist_run": "success"
+  },
+  "token_usage": 15974,
+  "estimated_cost": 0.0,
+  "llm_call_count": 4,
+  "search_call_count": 4,
+  "fetch_success_rate": 1.0,
+  "llm_usage": [
+    {
+      "tokens": 1532,
+      "estimated": false,
+      "cost": 0.0
+    },
+    {
+      "tokens": 4757,
+      "estimated": false,
+      "cost": 0.0
+    },
+    {
+      "tokens": 4646,
+      "estimated": false,
+      "cost": 0.0
+    },
+    {
+      "tokens": 5039,
+      "estimated": false,
+      "cost": 0.0
+    }
+  ],
+  "usage_estimated": false,
+  "ended_at": "2026-10-13T02:05:32.588248+00:00",
+  "total_duration_ms": 63235,
+  "persisted": true
+}

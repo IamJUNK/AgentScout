@@ -11,13 +11,14 @@ class IncompleteResponse(RuntimeError):
 
 
 class OpenAICompatibleClient:
-    def __init__(self, base_url=None, api_key=None, model=None, timeout=30.0):
+    def __init__(self, base_url=None, api_key=None, model=None, timeout=30.0, thinking_mode=None):
         from config import load_settings
         settings = load_settings() if None in (base_url, api_key, model) else None
         self.base_url = (base_url if base_url is not None else settings.llm_base_url).rstrip("/")
         self.api_key = api_key if api_key is not None else settings.llm_api_key
         self.model = model if model is not None else settings.llm_model
         self.timeout = timeout
+        self.thinking_mode = thinking_mode if thinking_mode is not None else (settings.llm_thinking_mode if settings else "default")
 
     @property
     def available(self):
@@ -26,7 +27,10 @@ class OpenAICompatibleClient:
     def chat(self, messages, temperature=.2, max_tokens=1800):
         if not self.available:
             raise RuntimeError("LLM_API_KEY and LLM_MODEL must be configured")
-        response = httpx.post(f"{self.base_url}/chat/completions", headers={"Authorization": f"Bearer {self.api_key}"}, json={"model": self.model, "messages": messages, "temperature": temperature, "max_tokens": max_tokens}, timeout=self.timeout)
+        payload = {"model": self.model, "messages": messages, "temperature": temperature, "max_tokens": max_tokens}
+        if self.thinking_mode != "default":
+            payload["thinking"] = {"type": self.thinking_mode}
+        response = httpx.post(f"{self.base_url}/chat/completions", headers={"Authorization": f"Bearer {self.api_key}"}, json=payload, timeout=self.timeout)
         response.raise_for_status()
         payload = response.json()
         choice = payload["choices"][0]

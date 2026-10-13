@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Literal
 from dotenv import dotenv_values
 from pydantic import BaseModel, Field
 
@@ -11,6 +12,7 @@ class Settings(BaseModel):
     llm_base_url: str = "https://api.openai.com/v1"
     llm_api_key: str = Field(default="", exclude=True, repr=False)
     llm_model: str = ""
+    llm_thinking_mode: Literal["default", "enabled", "disabled"] = "default"
     search_provider: str = "mock"
     tavily_api_key: str = Field(default="", exclude=True, repr=False)
     price_per_million_tokens: float = Field(default=0.0, ge=0)

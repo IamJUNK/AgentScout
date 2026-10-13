@@ -28,7 +28,7 @@ class AgentNodes:
     def __init__(self, settings: Settings, options: dict):
         self.settings, self.options = settings, options
         self.deadline = time.monotonic() + settings.research_timeout_seconds
-        self.client = OpenAICompatibleClient(settings.llm_base_url, settings.llm_api_key, options.get("model") or settings.llm_model, settings.llm_timeout_seconds)
+        self.client = OpenAICompatibleClient(settings.llm_base_url, settings.llm_api_key, options.get("model") or settings.llm_model, settings.llm_timeout_seconds, thinking_mode=settings.llm_thinking_mode)
 
     @property
     def cloud(self):

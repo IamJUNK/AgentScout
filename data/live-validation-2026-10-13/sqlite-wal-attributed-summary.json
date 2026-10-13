@@ -1,0 +1,103 @@
+{
+  "run_id": "8e019f3d-959e-4e5e-b58a-2ba2a8c43b55",
+  "status": "partial",
+  "execution_status": "finished",
+  "success": false,
+  "total_duration_ms": 35889,
+  "token_usage": 13603,
+  "llm_call_count": 6,
+  "search_call_count": 4,
+  "warnings": [
+    "瞬时模型错误，有限重试一次。",
+    "证据评估降级：[WinError 10054] 远程主机强迫关闭了一个现有的连接。",
+    "修复失败，保留原报告：本次研究 Token 或成本预算不足，未发起新模型请求。"
+  ],
+  "errors": [],
+  "budget_exhausted": true,
+  "stop_reason": "budget_exhausted",
+  "citation_metrics": {
+    "total_sources": 4,
+    "cited_sources": 4,
+    "source_utilization": 1.0,
+    "citation_coverage": 0.6666666666666666,
+    "claim_count": 6,
+    "attributed_claim_count": 4,
+    "invalid_citations": [
+      "documentation: https://www.sqlite.org/wal.html#sometimes_queries_return_sqlite_busy_in_wal_mode"
+    ],
+    "uncited_claims": [
+      "根据本次取证到的证据，**不支持“WAL 模式允许多个写入者同时写入”**；相反，证据表明 WAL 模式下写入者之间会互相阻塞。",
+      "根据本次取证到的证据，**开启 WAL 后 SQLITE_BUSY 仍可能发生**，至少在一个已取证的具体场景（崩溃恢复）中会发生。"
+    ]
+  },
+  "report_review": {
+    "task_compliant": false,
+    "complete": false,
+    "supported": false,
+    "issues": [
+      "报告未按原请求要求引用 SQLite 官方文档原文；所有证据均来自 sqlite.org/forum 用户论坛，而非 sqlite.org/wal.html 等官方文档正文。",
+      "问题一（WAL 是否允许多个写入者同时写入）未提供官方文档原文支持，仅依赖论坛片段“writers block each other”，无法满足“引用原文”的要求。",
+      "问题二（开启 WAL 后 SQLITE_BUSY 是否仍可能发生）同样未提供官方文档原文，仅依赖论坛对官方文档的转述，且未覆盖检查点、写锁竞争等其他可能原因。",
+      "报告虽在限制说明中承认证据缺口，但结论仍以论坛内容作为主要依据，未达到原请求所要求的官方文档证据标准。"
+    ]
+  },
+  "assessment": [
+    {
+      "question_id": "q1",
+      "status": "partial",
+      "evidence_ids": [
+        "E466c832330bc",
+        "E6599b851e1f0",
+        "E18f35134a079",
+        "E41073bac847b"
+      ],
+      "explanation": "现有证据均为 SQLite 用户论坛帖子，而非官方文档原文。论坛片段称“in SQLite's WAL mode readers do use a snapshot; writers block each other”，可支持“WAL 下写入者互相阻塞、不能多个写入者同时写入”的结论，但未引用官方文档原文，且部分片段只是指向 wal.html 的链接或泛泛描述 WAL 持久性，不能直接回答多写入者问题。缺少官方文档中关于“同一时间只能有一个写入者”的原文引用。",
+      "next_queries": [
+        "site:sqlite.org/wal.html \"one writer\" OR \"single writer\"",
+        "site:sqlite.org/wal.html writers block each other"
+      ],
+      "temporal_applicability": "unknown"
+    },
+    {
+      "question_id": "q2",
+      "status": "partial",
+      "evidence_ids": [
+        "Ee790f355d0d8",
+        "Eff0997296273",
+        "E0a2c6b7c5940"
+      ],
+      "explanation": "证据来自 SQLite 用户论坛，其中引用了官方文档链接 wal.html#sometimes_queries_return_sqlite_busy_in_wal_mode，并转述“If the last connection to a database crashed... An exclusive lock is held during recovery... the third connection will get an SQLITE_BUSY error”。这可支持“开启 WAL 后 SQLITE_BUSY 仍可能发生（例如恢复期间）”，但属于论坛转述而非官方文档原文，且未覆盖 WAL 模式下 SQLITE_BUSY 的其他常见原因（如检查点、写锁竞争）。",
+      "next_queries": [
+        "site:sqlite.org/wal.html \"SQLITE_BUSY\"",
+        "site:sqlite.org/wal.html#sometimes_queries_return_sqlite_busy_in_wal_mode"
+      ],
+      "temporal_applicability": "unknown"
+    }
+  ],
+  "documents": [
+    {
+      "url": "https://sqlite.org/forum/forumpost/c4dbf6ca17",
+      "fetch_status": "success",
+      "fetch_error": null,
+      "download_truncated": false
+    },
+    {
+      "url": "https://sqlite.org/forum/forumpost/4d93f49a04?t=h&unf=",
+      "fetch_status": "success",
+      "fetch_error": null,
+      "download_truncated": false
+    },
+    {
+      "url": "https://sqlite.org/forum/info/b4e8b29ae409cd198652c6b7e70b53b702f269e67e1d2573d627feeba37bbf85",
+      "fetch_status": "success",
+      "fetch_error": null,
+      "download_truncated": false
+    },
+    {
+      "url": "https://sqlite.org/forum/forumpost/4d93f49a04?raw=",
+      "fetch_status": "success",
+      "fetch_error": null,
+      "download_truncated": false
+    }
+  ]
+}

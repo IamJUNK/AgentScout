@@ -70,3 +70,17 @@ def test_reference_subheadings_do_not_count_as_body():
     report = "A supported claim [证据 Eone](https://example.com/1)\n\n## References\n### Additional reading\n[证据 Etwo](https://example.com/2)"
     metrics = validate_report(report, evidence=EVIDENCE)
     assert metrics.cited_sources == 1
+
+
+def test_escaped_source_link_is_not_an_illegal_report_citation():
+    report = r'Quoted text \[original\](https://external.example) [证据 Eone](https://example.com/1)'
+    metrics = validate_report(report, evidence=EVIDENCE)
+    assert not metrics.invalid_citations and not metrics.uncited_claims
+    assert metrics.citation_coverage == 1
+
+
+def test_escaped_evidence_link_cannot_satisfy_attribution():
+    report = r'A claim \[证据 Eone\](https://example.com/1)'
+    metrics = validate_report(report, evidence=EVIDENCE)
+    assert metrics.cited_sources == 0 and metrics.uncited_claims
+    assert duplicate_citations(report + '\n' + report) == []

@@ -24,6 +24,30 @@ def test_extract_json_fence():
     with pytest.raises(ValueError): extract_json('invalid')
 
 
+@pytest.mark.parametrize('mode', ['default', 'enabled', 'disabled'])
+def test_thinking_mode_is_forwarded_without_changing_default_requests(monkeypatch, mode):
+    requests = []
+    def post(url, **kwargs):
+        requests.append(kwargs['json'])
+        return httpx.Response(200, request=httpx.Request('POST', url), json={
+            'choices': [{'message': {'content': 'answer'}, 'finish_reason': 'stop'}],
+            'usage': {'total_tokens': 8}})
+    monkeypatch.setattr(httpx, 'post', post)
+    settings = Settings(llm_base_url='https://example.com', llm_api_key='fixture',
+                        llm_model='fixture', llm_thinking_mode=mode)
+    nodes = AgentNodes(settings, {'mock': False})
+    assert nodes.client.chat([]) == ('answer', 8)
+    monkeypatch.setattr('config.load_settings', lambda: settings)
+    assert OpenAICompatibleClient().chat([]) == ('answer', 8)
+    judge_report('task', 'report', settings)
+    assert len(requests) == 3
+    for payload in requests:
+        if mode == 'default':
+            assert 'thinking' not in payload
+        else:
+            assert payload['thinking'] == {'type': mode}
+
+
 def test_missing_judge_is_separate_skipped_review(tmp_path):
     store=RunStore(tmp_path/'skip.db')
     run=run_research('LangGraph',settings=Settings(),store=store)

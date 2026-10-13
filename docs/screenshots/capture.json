@@ -1,0 +1,21 @@
+{
+  "captured_at": "2026-10-13T02:51:13.640Z",
+  "mode": "mock",
+  "source": "app.py via scripts/demo_app.py",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "evaluation_viewport": {
+    "width": 1440,
+    "height": 1200
+  },
+  "evaluation_tasks": 20,
+  "files": [
+    "01-research.png",
+    "02-report.png",
+    "03-evidence.png",
+    "04-trace.png",
+    "05-evaluation.png"
+  ]
+}

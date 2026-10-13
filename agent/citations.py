@@ -3,8 +3,8 @@ import re
 from collections import Counter
 from models.schemas import CitationMetrics
 
-EVIDENCE_RE = re.compile(r"\[证据\s+(E[a-zA-Z0-9_-]+)\]\(((?:https?|user)://[^\s)]+)\)")
-ANY_LINK_RE = re.compile(r"\[([^\]]*)\]\(((?:https?|user)://[^\s)]+)\)")
+EVIDENCE_RE = re.compile(r"(?<!\\)\[证据\s+(E[a-zA-Z0-9_-]+)(?<!\\)\]\(((?:https?|user)://[^\s)]+)\)")
+ANY_LINK_RE = re.compile(r"(?<!\\)\[([^\]]*)(?<!\\)\]\(((?:https?|user)://[^\s)]+)\)")
 NOTICE_PREFIXES = ("> 状态：", "> 限制：", "> 研究需求：", "> 未解答：", "> 预算：")
 
 
