@@ -1,33 +1,19 @@
-# 新版界面截图
+# 界面截图版本说明
 
-拍摄日期：2026-10-13。截图来自当前 `app.py` 的实际浏览器操作，没有修改页面指标或伪造报告内容。全部采用 Mock 演示与离线评测，独立 Judge 关闭，不使用真实密钥或付费服务。
+## NiceGUI 改造版 · 2026-10-17
 
-| 文件 | 内容 |
-|---|---|
-| [01-research.png](01-research.png) | 研究需求、可选材料及模式选择 |
-| [02-report.png](02-report.png) | 演示资料状态、引用、警告与 Markdown 下载 |
-| [03-evidence.png](03-evidence.png) | 展开的证据片段、类型、来源及原文位置 |
-| [04-trace.png](04-trace.png) | 节点时间线与事件类型 |
-| [05-evaluation.png](05-evaluation.png) | 20 条 Mock 任务的当前指标口径 |
+`nicegui-workbench.png`、`nicegui-report.png`、`nicegui-evidence.png`、`nicegui-trace.png`、`nicegui-mobile.png` 来自实际浏览器截图。使用本轮已保存的 WAL 真实结果，页面明确标注只读预览。拍照不重跑模型和搜索，也不证明 MySQL / Celery 完整链路已经通过。
 
-截图中的零 Token、低耗时和零估算费用仅属于 Mock。图中段落引用率不代表事实正确，研究完成率为零也不是程序执行失败。真实联网结果见 [SQLite WAL 验证](../../data/live-validation-2026-10-13/README.md)。
+检查桌面 1440×1000、手机 390×844、Markdown 下载、刷新和浏览器异常；原始结果在 `nicegui-capture.json`。
 
-## 重新拍摄
+重拍：先运行 `python scripts/preview_saved.py PATH_TO_STATE.json`，再运行 `node scripts/capture_demo.cjs`。需要 Node、Playwright 包和 Chrome；这些是文档验收工具，不是应用依赖。截图会覆盖同名 NiceGUI 图片。
 
-需要项目 Python 依赖、Node.js、可由 Node 解析到的 Playwright 包，以及已安装的 Google Chrome。Playwright 仅用于文档截图，不是应用运行依赖。
+没有真实保存结果时，可运行 `python scripts/demo_app.py` 查看明确标注的 Mock 只读预览。
 
-在项目根目录启动隔离演示入口：
+## 真实服务验收截图
 
-```powershell
-.\.venv\Scripts\python.exe -m streamlit run scripts/demo_app.py --server.address 127.0.0.1 --server.port 8502 --server.headless true --browser.gatherUsageStats false
-```
+`nicegui-service-mock.png` 来自独立 agentscout-validation 服务：真实 MySQL、Redis 和 Celery Worker，研究内容为明确标注的 Mock。浏览器提交、报告/证据、下载、刷新、双会话、重试与历史选择已通过；原始结果在本地 `data/upgrade-local/service-ui.json`，公开摘要在 `evals/results/upgrade-summary.json`。
 
-另开终端运行：
+## 历史 Streamlit 版 · 2026-10-13
 
-```powershell
-node scripts/capture_demo.cjs
-```
-
-演示入口使用空密钥配置，跳过 `.env` 并将数据写入 `data/readme-demo.db`。截图脚本显式选择 Mock，关闭两个 Judge，等待页面完成渲染；输出至本目录并覆盖同名图片，记录元数据至 `capture.json`。生成前请确认不需要保留这些截图的旧版本。
-
-研究视图为 1440 × 1000，评测视图为 1440 × 1200；证据和轨迹直接截取对应组件，其他图片截取相关页面区域。旧版图片和 `demo.webm` 保留在 docs 根目录，仅作历史材料。
+`01-research.png` 至 `05-evaluation.png` 和 `capture.json` 保留原样，来自旧 Streamlit Mock 演示。它们不是当前入口，不能作为新版完成情况。docs 根目录更早的 PNG / demo.webm 同样属于历史资料。

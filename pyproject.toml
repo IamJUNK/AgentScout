@@ -1,6 +1,6 @@
 [project]
 name = "agent-scout"
-version = "0.2.0"
+version = "0.3.0"
 description = "Lightweight research agent with traces and offline evaluation"
 requires-python = ">=3.11"
 dynamic = ["dependencies"]
@@ -16,8 +16,9 @@ dependencies = {file = ["requirements.txt"]}
 py-modules = ["config", "app"]
 
 [tool.setuptools.packages.find]
-include = ["agent*", "models*", "tools*", "storage*", "observability*", "evals*"]
+include = ["agent*", "models*", "tools*", "storage*", "observability*", "evals*", "api*", "services*", "workers*", "ui*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+markers = ["integration: requires isolated MySQL and Redis services"]

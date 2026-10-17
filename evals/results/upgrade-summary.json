@@ -1,0 +1,335 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-10-17",
+  "unit_tests": {
+    "windows": {
+      "passed": 109,
+      "skipped": 14
+    },
+    "linux": {
+      "passed": 123,
+      "skipped": 0,
+      "seconds": 10.22,
+      "log": "data/upgrade-local/linux-tests-final.log"
+    },
+    "service_integration": "passed",
+    "alembic": "upgrade head and schema check passed",
+    "pip_check": "passed on Windows and Linux"
+  },
+  "live": {
+    "tasks": 5,
+    "known_tokens": 55897,
+    "searches": 8,
+    "model_calls": 22,
+    "unknown_reserved_tokens": 0,
+    "approved_limits": {
+      "tasks": 5,
+      "reserved_tokens": 150000,
+      "searches": 20
+    },
+    "billing_verified": false,
+    "results": [
+      {
+        "id": "wal-2c4565411c",
+        "case": "wal",
+        "status": "partial",
+        "tokens": 22188,
+        "searches": 4,
+        "llm_calls": 5,
+        "duration_ms": 110928
+      },
+      {
+        "id": "wal-e4198695a0",
+        "case": "wal",
+        "status": "completed",
+        "tokens": 14773,
+        "searches": 4,
+        "llm_calls": 4,
+        "duration_ms": 111718
+      },
+      {
+        "id": "material-6064813e28",
+        "case": "material",
+        "status": "completed",
+        "tokens": 4632,
+        "searches": 0,
+        "llm_calls": 4,
+        "duration_ms": 28110
+      },
+      {
+        "id": "conflict-b0b8d70a9c",
+        "case": "conflict",
+        "status": "partial",
+        "tokens": 5926,
+        "searches": 0,
+        "llm_calls": 5,
+        "duration_ms": 35614
+      },
+      {
+        "id": "tail-85fb5f31be",
+        "case": "tail",
+        "status": "completed",
+        "tokens": 8378,
+        "searches": 0,
+        "llm_calls": 4,
+        "duration_ms": 33506
+      }
+    ]
+  },
+  "browser": {
+    "captured_at": "2026-10-17T13:00:51.272Z",
+    "mode": "saved_result_read_only",
+    "browser_errors": [],
+    "mobile_horizontal_overflow": false,
+    "download": true,
+    "reload": true,
+    "queue_end_to_end": false
+  },
+  "retrieval": {
+    "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    "annotation_status": "synthetic retrieval fixtures, agent-authored; not independently reviewed factual benchmark",
+    "total_embedding_seconds": 2.185,
+    "rows": [
+      {
+        "id": "writer",
+        "split": "dev",
+        "bm25": {
+          "recall_at_3": 0.0,
+          "reciprocal_rank": 0
+        },
+        "dense": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "hybrid": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0
+        }
+      },
+      {
+        "id": "billing",
+        "split": "dev",
+        "bm25": {
+          "recall_at_3": 0.0,
+          "reciprocal_rank": 0
+        },
+        "dense": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 0.5
+        },
+        "hybrid": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 0.5
+        }
+      },
+      {
+        "id": "retention",
+        "split": "dev",
+        "bm25": {
+          "recall_at_3": 0.0,
+          "reciprocal_rank": 0
+        },
+        "dense": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "hybrid": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 0.5
+        }
+      },
+      {
+        "id": "english-idempotency",
+        "split": "dev",
+        "bm25": {
+          "recall_at_3": 0.0,
+          "reciprocal_rank": 0
+        },
+        "dense": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "hybrid": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 0.5
+        }
+      },
+      {
+        "id": "worker",
+        "split": "frozen",
+        "bm25": {
+          "recall_at_3": 0.0,
+          "reciprocal_rank": 0
+        },
+        "dense": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "hybrid": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0
+        }
+      },
+      {
+        "id": "conditions",
+        "split": "frozen",
+        "bm25": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "dense": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "hybrid": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0
+        }
+      },
+      {
+        "id": "snippet",
+        "split": "frozen",
+        "bm25": {
+          "recall_at_3": 0.0,
+          "reciprocal_rank": 0
+        },
+        "dense": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "hybrid": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0
+        }
+      },
+      {
+        "id": "transaction",
+        "split": "frozen",
+        "bm25": {
+          "recall_at_3": 0.0,
+          "reciprocal_rank": 0
+        },
+        "dense": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "hybrid": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0
+        }
+      }
+    ],
+    "summary": {
+      "dev": {
+        "bm25": {
+          "recall_at_3": 0.0,
+          "reciprocal_rank": 0.0
+        },
+        "dense": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 0.875
+        },
+        "hybrid": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 0.625
+        }
+      },
+      "frozen": {
+        "bm25": {
+          "recall_at_3": 0.25,
+          "reciprocal_rank": 0.25
+        },
+        "dense": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0
+        },
+        "hybrid": {
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Small iterative live sample, not controlled accuracy comparison",
+    "Agent-authored fixed fixtures, not independently human reviewed",
+    "Frozen retrieval set established during implementation, not before all tuning",
+    "Remote GitHub Actions not executed; no commit or push",
+    "Paid validation ran the research core, service acceptance used Mock with real infrastructure",
+    "No controlled baseline vs quality rewrite comparison or independent human gold labels"
+  ],
+  "browser_service": {
+    "timestamp": "2026-10-17T12:47:28.066Z",
+    "task_id": "3f8d69c1-4212-4804-bf91-e8fa7f4af538",
+    "mode": "mock_real_service",
+    "submit": true,
+    "report": true,
+    "evidence": true,
+    "download": true,
+    "reload": true,
+    "two_browser_sessions": true,
+    "retry_history": true,
+    "mobile_overflow": false,
+    "browser_errors": []
+  },
+  "service_faults": {
+    "queued_cancel_then_retry": true,
+    "outage_submit_seconds": 4.031,
+    "redis_outage_recovered": true,
+    "recovered_dispatch_count": 2,
+    "container_restart_preserved_report": true,
+    "task_id": "3cd7d0aa-a933-46ee-826a-d1a5084e8a6c",
+    "paid_calls": 0
+  },
+  "environment": {
+    "wsl": "3.0.3.0",
+    "docker_engine": "29.8.2",
+    "mysql": "8.4.6",
+    "redis": "7.4.6-alpine",
+    "linux_python": "3.12.12",
+    "windows_restart_performed": false
+  },
+  "local_embedding_container": {
+    "passed": true,
+    "network": "none",
+    "vectors": 2,
+    "dimensions": 384,
+    "metadata": {
+      "provider": "local",
+      "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "dimensions": 384,
+      "texts": 3,
+      "duration_ms": 451,
+      "window_tokens": 120,
+      "overlap_tokens": 16
+    },
+    "selection_method": "hybrid_rrf",
+    "tail_offset": [
+      13056,
+      13663
+    ],
+    "llm_calls": 0,
+    "searches": 0,
+    "quality_status": "partial",
+    "duration_seconds": 4.41,
+    "manifest_verification": {
+      "files": 7,
+      "sha256_mismatches": 0
+    }
+  },
+  "final_targeted_regression": {
+    "passed": 23,
+    "seconds": 2.48,
+    "areas": [
+      "retrieval",
+      "quality",
+      "workflow",
+      "ui"
+    ]
+  },
+  "source_scan": {
+    "files": 78,
+    "credential_pattern_findings": 0,
+    "scope": "project source, tests, scripts, deployment config; no credentials printed"
+  }
+}

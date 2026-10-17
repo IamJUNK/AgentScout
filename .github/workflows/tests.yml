@@ -1,0 +1,55 @@
+name: Regression and service integration
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4.6
+        env:
+          MYSQL_DATABASE: agentscout_test
+          MYSQL_USER: agentscout
+          MYSQL_PASSWORD: test_only
+          MYSQL_ROOT_PASSWORD: test_root_only
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost"
+          --health-interval=5s --health-timeout=5s --health-retries=30
+      redis:
+        image: redis:7.4.6-alpine
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    env:
+      AGENTSCOUT_NO_DOTENV: '1'
+      DATABASE_URL: mysql+pymysql://agentscout:test_only@127.0.0.1:3306/agentscout_test
+      TEST_DATABASE_URL: mysql+pymysql://agentscout:test_only@127.0.0.1:3306/agentscout_test
+      REDIS_URL: redis://127.0.0.1:6379/0
+      TEST_REDIS_URL: redis://127.0.0.1:6379/15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12', cache: pip}
+      - run: pip install -r requirements.lock
+      - run: pip check
+      - run: alembic upgrade head
+      - run: alembic check
+      - run: pytest -q
+      - run: docker compose config --quiet
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Install browser validation tools
+        run: |
+          npm install --no-save --package-lock=false playwright@1.62.1
+          npx playwright install --with-deps chromium
+      - name: Run isolated service browser acceptance
+        run: |
+          mkdir -p data/upgrade-local
+          printf 'LLM_API_KEY=\nLLM_MODEL=\nTAVILY_API_KEY=\nEMBEDDING_API_KEY=\n' > data/upgrade-local/validation.env
+          docker compose --env-file data/upgrade-local/validation.env -p agentscout-validation -f compose.yaml -f compose.test.yaml build test
+          docker compose --env-file data/upgrade-local/validation.env -p agentscout-validation -f compose.yaml -f compose.test.yaml up -d --wait web worker reconciler
+          node scripts/check_service_ui.cjs
+      - name: Stop validation services
+        if: always()
+        run: docker compose --env-file data/upgrade-local/validation.env -p agentscout-validation -f compose.yaml -f compose.test.yaml down

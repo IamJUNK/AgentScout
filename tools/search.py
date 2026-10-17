@@ -5,6 +5,7 @@ from urllib.parse import urlsplit
 import httpx
 from agent.evidence import relevance
 from models.schemas import SearchResult
+from tools.urls import canonical_url
 
 
 def dedupe_results(results, limit=30):
@@ -14,7 +15,7 @@ def dedupe_results(results, limit=30):
     for item in results:
         try:
             result = item if isinstance(item, SearchResult) else SearchResult.model_validate(item)
-            url = result.url.strip()
+            url = canonical_url(result.url)
             parsed = urlsplit(url)
             if parsed.scheme not in {"http", "https"} or not parsed.hostname or parsed.username or parsed.password:
                 continue

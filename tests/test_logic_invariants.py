@@ -14,7 +14,7 @@ from agent.nodes import AgentNodes, BudgetExceeded
 from config import Settings
 from evals.judge import judge_report
 from models.schemas import SearchResult, SourceDocument
-from storage.database import RunStore
+from storage.memory import MemoryRunStore
 from tools.webpage import _clean_html, clear_page_cache, fetch_page
 
 
@@ -106,7 +106,7 @@ def test_followup_query_can_replace_full_stale_candidate_pool():
 
 def test_generic_summary_selects_supplied_material_without_keyword_overlap(tmp_path):
     run = run_research('仅根据提供的材料总结，不要联网。', supplied_text='zircon isotope result is 17 units',
-        settings=Settings(), mock=False, store=RunStore(tmp_path / 'material.db'))
+        settings=Settings(), mock=False, store=MemoryRunStore())
     assert run['search_call_count'] == 0 and run['evidence'][0]['kind'] == 'user'
     assert run['status'] == 'partial'
 
@@ -172,9 +172,11 @@ def test_legacy_sqlite_records_remain_readable(tmp_path):
             ('old', '2026-10-01T00:00:00+00:00', 'old task', 1, 0, 0, 'old report', '{}', '[]', '[]', '{}', '{}', '[]', '{}'))
         db.execute('CREATE TABLE trace_events (id INTEGER PRIMARY KEY, run_id TEXT, event_json TEXT)')
         db.execute('INSERT INTO trace_events VALUES (?,?,?)', (1, 'old', json.dumps({'node_name': 'legacy-node'})))
+    from storage.database import RunStore
     store = RunStore(path)
     assert store.get_run('old')['report'] == 'old report'
     assert store.get_run('old')['traces'][0]['node_name'] == 'legacy-node'
     assert store.list_runs()[0]['status'] == 'legacy'
-    run = run_research('LangGraph', settings=Settings(), store=store)
-    assert len(store.list_runs()) == 2 and store.get_run(run['run_id'])['status'] == 'demo'
+    with pytest.raises(RuntimeError,match='read-only'):
+        store.save_run({'run_id':'new'})
+    assert len(store.list_runs()) == 1

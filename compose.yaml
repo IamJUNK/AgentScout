@@ -1,0 +1,101 @@
+name: agentscout
+x-app: &app
+  build: .
+  init: true
+  environment: &environment
+    AGENTSCOUT_NO_DOTENV: '1'
+    DATABASE_URL: mysql+pymysql://agentscout:${MYSQL_PASSWORD:-local_demo_only}@mysql:3306/agentscout?charset=utf8mb4
+    REDIS_URL: redis://redis:6379/0
+    LLM_BASE_URL: ${LLM_BASE_URL:-https://api.deepseek.com}
+    LLM_MODEL: ${LLM_MODEL:-}
+    LLM_API_KEY: ${LLM_API_KEY:-}
+    LLM_THINKING_MODE: ${LLM_THINKING_MODE:-disabled}
+    TAVILY_API_KEY: ${TAVILY_API_KEY:-}
+    OFFICIAL_SOURCE_PREFIXES: ${OFFICIAL_SOURCE_PREFIXES:-[]}
+    EMBEDDING_BASE_URL: ${EMBEDDING_BASE_URL:-}
+    EMBEDDING_MODEL: ${EMBEDDING_MODEL:-}
+    EMBEDDING_API_KEY: ${EMBEDDING_API_KEY:-}
+    UI_SECRET: ${UI_SECRET:-}
+    MAX_TASK_TOKENS: ${MAX_TASK_TOKENS:-120000}
+    MAX_TASK_SEARCH_CALLS: ${MAX_TASK_SEARCH_CALLS:-24}
+    MAX_TASK_ATTEMPTS: ${MAX_TASK_ATTEMPTS:-3}
+    MAX_TOTAL_TOKENS: ${MAX_TOTAL_TOKENS:-100000}
+    MAX_SEARCH_CALLS: ${MAX_SEARCH_CALLS:-12}
+    MAX_ROUNDS: ${MAX_ROUNDS:-2}
+    MAX_LLM_CALLS: ${MAX_LLM_CALLS:-10}
+    MAX_FETCH_PAGES: ${MAX_FETCH_PAGES:-8}
+    MAX_QUESTIONS: ${MAX_QUESTIONS:-8}
+    MAX_CANDIDATES: ${MAX_CANDIDATES:-30}
+    RESEARCH_TIMEOUT_SECONDS: ${RESEARCH_TIMEOUT_SECONDS:-180}
+    LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-30.0}
+    MAX_DOWNLOAD_BYTES: ${MAX_DOWNLOAD_BYTES:-2000000}
+    FETCH_CONCURRENCY: ${FETCH_CONCURRENCY:-3}
+    CACHE_TTL_SECONDS: ${CACHE_TTL_SECONDS:-600}
+    CONTEXT_TOKEN_BUDGET: ${CONTEXT_TOKEN_BUDGET:-16000}
+    EVIDENCE_TOKEN_BUDGET: ${EVIDENCE_TOKEN_BUDGET:-6500}
+    PLAN_MAX_TOKENS: ${PLAN_MAX_TOKENS:-1800}
+    REPORT_MAX_TOKENS: ${REPORT_MAX_TOKENS:-4000}
+    REVIEW_MAX_TOKENS: ${REVIEW_MAX_TOKENS:-2400}
+    PRICE_PER_MILLION_TOKENS: ${PRICE_PER_MILLION_TOKENS:-0.0}
+    MAX_COST_USD: ${MAX_COST_USD:-0}
+    EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-local}
+    EMBEDDING_MAX_TOKENS: ${EMBEDDING_MAX_TOKENS:-16000}
+    DISPATCH_MAX_ATTEMPTS: ${DISPATCH_MAX_ATTEMPTS:-10}
+    DISPATCH_INTERVAL_SECONDS: ${DISPATCH_INTERVAL_SECONDS:-60}
+    HEARTBEAT_TIMEOUT_SECONDS: ${HEARTBEAT_TIMEOUT_SECONDS:-90}
+  depends_on:
+    mysql: {condition: service_healthy}
+    redis: {condition: service_healthy}
+services:
+  mysql:
+    image: mysql:8.4.6
+    environment:
+      MYSQL_DATABASE: agentscout
+      MYSQL_USER: agentscout
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-local_demo_only}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-local_root_only}
+    command: [--character-set-server=utf8mb4, --collation-server=utf8mb4_0900_as_cs]
+    volumes: [mysql-data:/var/lib/mysql]
+    healthcheck:
+      test: [CMD-SHELL, 'MYSQL_PWD=$$MYSQL_PASSWORD mysql -uagentscout -D agentscout -e "SELECT 1"']
+      interval: 5s
+      timeout: 3s
+      retries: 30
+  redis:
+    image: redis:7.4.6-alpine
+    command: [redis-server, --appendonly, 'yes', --maxmemory-policy, noeviction]
+    volumes: [redis-data:/data]
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  migrate:
+    <<: *app
+    command: [alembic, upgrade, head]
+  web:
+    <<: *app
+    ports: ['127.0.0.1:8080:8080']
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8080/health/ready')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+  worker:
+    <<: *app
+    command: [celery, -A, workers.celery_app:celery_app, worker, --loglevel=INFO, --concurrency=2]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+  reconciler:
+    <<: *app
+    command: [python, -m, workers.reconcile]
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+volumes:
+  mysql-data:
+  redis-data:

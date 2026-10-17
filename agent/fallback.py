@@ -16,9 +16,11 @@ def prepare_brief(text: str) -> ResearchBrief:
 
 
 def plan_research_fallback(text: str, max_questions: int = 8) -> ResearchPlan:
-    # Preserve the request instead of inventing background/career questions.
-    clean = text.strip()
-    return ResearchPlan(questions=[ResearchQuestion(id="q1", text=clean, queries=[clean])])
+    from agent.quality import requirements
+    reqs = requirements(text)
+    if len(reqs) > max_questions:
+        raise ValueError(f'明确问题数 {len(reqs)} 超过上限 {max_questions}，请拆分提交；未静默删题。')
+    return ResearchPlan(questions=[ResearchQuestion(id=f'q{i}', text=r.text, queries=[r.text], requirement_ids=[r.id]) for i, r in enumerate(reqs, 1)])
 
 
 def estimate_tokens(text: str) -> int:

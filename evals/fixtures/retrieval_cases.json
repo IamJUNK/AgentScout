@@ -1,0 +1,25 @@
+{
+  "annotation_status":"synthetic retrieval fixtures, agent-authored; not independently reviewed factual benchmark",
+  "documents":[
+    "Only one writer may modify a resource at a time; readers can continue concurrently.",
+    "A network timeout does not prove that a provider did not execute or bill a request.",
+    "The retention period is thirty days, after which task details are deleted.",
+    "If a worker terminates, the task is marked failed and its previous execution token becomes invalid.",
+    "Falcon supports 12 MPa only below 30 degrees Celsius and with a new seal.",
+    "Search snippets are short extracts and are not equivalent to reading the full document.",
+    "同一个幂等键对应相同请求时，返回之前创建的任务，不重复入队。",
+    "数据库事务只覆盖短暂的状态更新，不应在等待远程模型响应时保持事务打开。"
+  ],
+  "dev":[
+    {"id":"writer","query":"最多能同时有几个写入者？","relevant":[0]},
+    {"id":"billing","query":"请求超时是否仍可能产生费用？","relevant":[1]},
+    {"id":"retention","query":"保存多久会删除任务资料？","relevant":[2]},
+    {"id":"english-idempotency","query":"same idempotency key duplicate request","relevant":[6]}
+  ],
+  "frozen":[
+    {"id":"worker","query":"工作进程退出后如何阻止旧进程写回结果？","relevant":[3]},
+    {"id":"conditions","query":"Falcon 压力上限的适用条件有哪些？","relevant":[4]},
+    {"id":"snippet","query":"搜索摘要可以当作已经读过全文吗？","relevant":[5]},
+    {"id":"transaction","query":"database transaction while waiting for model API response","relevant":[7]}
+  ]
+}

@@ -9,13 +9,13 @@ from config import ROOT, Settings, load_settings
 from evals.judge import attach_judge
 from evals.metrics import evaluate_run, summarize
 from observability.tracing import utc_now
-from storage.database import RunStore
+from storage.memory import MemoryRunStore
 
 def load_dataset(path: Path = ROOT / "evals" / "dataset.json") -> list[dict]:
     return json.loads(path.read_text(encoding="utf-8"))
 
-def run_evaluation(*, limit: int = 10, mock: bool = True, variant: str = "structured", model: str = "", judge: bool = False, settings: Settings | None = None, store: RunStore | None = None, on_progress: Callable | None = None) -> dict:
-    settings, store = settings or load_settings(), store or RunStore()
+def run_evaluation(*, limit: int = 10, mock: bool = True, variant: str = "structured", model: str = "", judge: bool = False, settings: Settings | None = None, store=None, on_progress: Callable | None = None) -> dict:
+    settings, store = settings or load_settings(), store if store is not None else MemoryRunStore()
     tasks, rows = load_dataset()[:max(1, min(limit, 20))], []
     for index, task in enumerate(tasks):
         started = time.perf_counter()

@@ -2,6 +2,11 @@ from typing import Any, TypedDict
 
 
 class AgentState(TypedDict, total=False):
+    requirements: list[dict]
+    structured_report: dict
+    claim_review: dict
+    quality_errors: list[str]
+    external_calls: list[dict]
     run_id: str
     created_at: str
     started_at: str
@@ -17,6 +22,10 @@ class AgentState(TypedDict, total=False):
     source_documents: list[dict]
     evidence: list[dict]
     evidence_selection: dict
+    evidence_fingerprint: str
+    evidence_round: int
+    no_new_evidence: bool
+    retrieval_metadata: dict
     assessment: list[dict]
     round: int
     searched_queries: list[str]

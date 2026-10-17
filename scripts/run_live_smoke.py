@@ -1,4 +1,6 @@
 """Run one bounded real research task and save diagnostics without credentials."""
+raise SystemExit("Historical 2026-10-13 script retired to protect saved results. Use scripts/validate_upgrade.py only with a newly approved budget.")
+
 import json
 import sys
 from pathlib import Path

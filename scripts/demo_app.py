@@ -1,20 +1,14 @@
-"""Run the current app with key-free settings and a separate demo database."""
-from pathlib import Path
-import os
-import runpy
+"""Generate a key-free Mock result then show the read-only NiceGUI preview."""
 import sys
+from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+from agent.graph import run_research
+from config import Settings
+from app import create_app
+from scripts.preview_saved import SavedPreview
+import uvicorn
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
-
-import config
-
-
-def demo_settings():
-    # Never load the developer's .env while capturing public documentation.
-    return config.Settings(search_provider="mock")
-
-
-config.load_settings = demo_settings
-os.environ["AGENTSCOUT_DB"] = str(ROOT / "data" / "readme-demo.db")
-runpy.run_path(str(ROOT / "app.py"), run_name="__main__")
+if __name__=='__main__':
+    preview=SavedPreview.__new__(SavedPreview)
+    preview.saved=run_research('比较 LangGraph 和 CrewAI 的适用场景',mock=True,settings=Settings())
+    uvicorn.run(create_app(preview),host='127.0.0.1',port=8502)

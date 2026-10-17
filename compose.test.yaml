@@ -1,0 +1,43 @@
+# Isolated validation stack. Use -p agentscout-validation and --env-file explicitly.
+x-test-env: &test-env
+  AGENTSCOUT_NO_DOTENV: '1'
+  DATABASE_URL: mysql+pymysql://agentscout:test_only@mysql:3306/agentscout_test?charset=utf8mb4
+  REDIS_URL: redis://redis:6379/0
+  LLM_API_KEY: ''
+  LLM_MODEL: ''
+  TAVILY_API_KEY: ''
+  EMBEDDING_API_KEY: ''
+services:
+  mysql:
+    environment:
+      MYSQL_DATABASE: agentscout_test
+      MYSQL_PASSWORD: test_only
+      MYSQL_ROOT_PASSWORD: test_root_only
+    healthcheck:
+      test: [CMD-SHELL, 'MYSQL_PWD=test_only mysql -uagentscout -D agentscout_test -e "SELECT 1"']
+  migrate:
+    image: agentscout-validation:local
+    environment: *test-env
+  web:
+    image: agentscout-validation:local
+    environment: *test-env
+    ports: !override ['127.0.0.1:8081:8080']
+  worker:
+    image: agentscout-validation:local
+    environment: *test-env
+  reconciler:
+    image: agentscout-validation:local
+    environment: *test-env
+  test:
+    image: agentscout-validation:local
+    profiles: [test]
+    build: .
+    init: true
+    environment:
+      <<: *test-env
+      TEST_DATABASE_URL: mysql+pymysql://agentscout:test_only@mysql:3306/agentscout_test?charset=utf8mb4
+      TEST_REDIS_URL: redis://redis:6379/15
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+    command: [python, -m, pytest, -q]

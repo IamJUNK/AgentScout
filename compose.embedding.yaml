@@ -1,0 +1,12 @@
+# Optional local CPU embeddings. Prepare the model explicitly, then restart worker.
+services:
+  worker:
+    build:
+      context: .
+      args:
+        INSTALL_LOCAL_EMBEDDINGS: '1'
+    environment:
+      EMBEDDING_PROVIDER: local
+      EMBEDDING_CACHE_DIR: /app/data/embedding-model
+    volumes:
+      - ./data/embedding-model:/app/data/embedding-model:ro

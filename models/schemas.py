@@ -22,6 +22,7 @@ class ResearchBrief(BaseModel):
 
 class ResearchQuestion(BaseModel):
     id: str = ""
+    requirement_ids: list[str] = Field(default_factory=list)
     text: str = Field(min_length=1)
     queries: list[str] = Field(min_length=1, max_length=3)
 
@@ -44,6 +45,8 @@ class SearchResult(BaseModel):
 class SourceDocument(BaseModel):
     title: str
     url: str
+    final_url: str = ''
+    content_hash: str = ''
     source_id: str = ""
     question_ids: list[str] = Field(default_factory=list)
     content: str = ""

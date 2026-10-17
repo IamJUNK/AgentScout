@@ -6,24 +6,24 @@ from agent.nodes import AgentNodes
 from agent.state import AgentState
 from config import load_settings, safe_error
 from observability.tracing import run_traced_node, utc_now
-from storage.database import RunStore
+from storage.memory import MemoryRunStore
 
 NODE_NAMES = ["prepare_research", "plan_research", "search_sources", "fetch_pages", "assess_evidence", "synthesize_report", "validate_citations", "finalize", "persist_run"]
 
 
-def run_research(input_text, *, supplied_text="", mock=True, search_count=5, model="", prompt_variant="structured", force_refresh=False, settings=None, store=None, on_node=None):
+def run_research(input_text, *, supplied_text="", mock=True, search_count=5, model="", prompt_variant="structured", force_refresh=False, settings=None, store=None, on_node=None, control=None):
     if not input_text.strip():
         raise ValueError("请输入研究需求。")
     if prompt_variant not in {"baseline", "structured"}:
         raise ValueError("Unknown report strategy")
-    settings, store = settings or load_settings(), store or RunStore()
+    settings, store = settings or load_settings(), store if store is not None else MemoryRunStore()
     options = {"mock": mock, "search_count": max(1, min(10, search_count)), "model": model or settings.llm_model, "prompt_variant": prompt_variant, "force_refresh": force_refresh}
     # Every execution gets its own identity; only immutable page content is cached.
     state = {"run_id": str(uuid4()), "created_at": utc_now(), "started_at": utc_now(), "input_text": input_text.strip(), "config": {**options, "settings": settings.model_dump()}, "traces": [], "node_status": {}, "errors": [], "warnings": [], "token_usage": 0, "estimated_cost": 0.0, "llm_call_count": 0, "search_call_count": 0, "report": "", "fetch_success_rate": 0.0, "status": "running", "execution_status": "running", "success": False, "budget_exhausted": False}
     started = time.perf_counter()
     state["supplied_text"] = supplied_text
     latest = {"state": state}
-    nodes = AgentNodes(settings, options)
+    nodes = AgentNodes(settings, {**options, 'control': control or (lambda: None), 'persist': store.save_run})
     if not mock and not nodes.client.available:
         state["warnings"].append("未配置云端模型：只能收集资料，无法完成语义评估和研究答案。")
 
@@ -38,11 +38,13 @@ def run_research(input_text, *, supplied_text="", mock=True, search_count=5, mod
                     s.update(changes or {})
                     if name == "assess_evidence":
                         s["next_step"] = nodes.should_research_more(s)
+                    if name == 'validate_citations':
+                        s['next_step'] = 'search_sources' if nodes.should_research_more(s) == 'search_sources' else 'finalize'
                     return changes
                 except Exception as exc:
                     raise RuntimeError(safe_error(exc, settings)) from None
             result = run_traced_node(current, name, action, current["input_text"][:200])
-            # Checkpoint completed node snapshots; resume is deliberately not automatic.
+            # Persist observations, not resumable LangGraph checkpoints.
             store.save_run(result)
             return result
         return execute
@@ -57,7 +59,7 @@ def run_research(input_text, *, supplied_text="", mock=True, search_count=5, mod
     graph.add_edge("fetch_pages", "assess_evidence")
     graph.add_conditional_edges("assess_evidence", lambda s: s["next_step"], {"search_sources": "search_sources", "synthesize_report": "synthesize_report"})
     graph.add_edge("synthesize_report", "validate_citations")
-    graph.add_edge("validate_citations", "finalize")
+    graph.add_conditional_edges('validate_citations', lambda s: s['next_step'], {'search_sources': 'search_sources', 'finalize': 'finalize'})
     graph.add_edge("finalize", END)
     try:
         state = graph.compile().invoke(state, {"recursion_limit": 50})
@@ -75,6 +77,6 @@ def run_research(input_text, *, supplied_text="", mock=True, search_count=5, mod
             state["total_duration_ms"] = int((time.perf_counter()-started)*1000)
             store.save_run(state)
         except Exception as exc:
-            state["errors"].append("SQLite 保存失败：" + safe_error(exc, settings))
+            state["errors"].append("研究状态保存失败：" + safe_error(exc, settings))
             state.update(status="failed", execution_status="failed", success=False)
     return state

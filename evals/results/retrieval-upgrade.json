@@ -1,0 +1,165 @@
+{
+  "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "annotation_status": "synthetic retrieval fixtures, agent-authored; not independently reviewed factual benchmark",
+  "total_embedding_seconds": 2.185,
+  "rows": [
+    {
+      "id": "writer",
+      "split": "dev",
+      "bm25": {
+        "recall_at_3": 0.0,
+        "reciprocal_rank": 0
+      },
+      "dense": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "hybrid": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 1.0
+      }
+    },
+    {
+      "id": "billing",
+      "split": "dev",
+      "bm25": {
+        "recall_at_3": 0.0,
+        "reciprocal_rank": 0
+      },
+      "dense": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 0.5
+      },
+      "hybrid": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 0.5
+      }
+    },
+    {
+      "id": "retention",
+      "split": "dev",
+      "bm25": {
+        "recall_at_3": 0.0,
+        "reciprocal_rank": 0
+      },
+      "dense": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "hybrid": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 0.5
+      }
+    },
+    {
+      "id": "english-idempotency",
+      "split": "dev",
+      "bm25": {
+        "recall_at_3": 0.0,
+        "reciprocal_rank": 0
+      },
+      "dense": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "hybrid": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 0.5
+      }
+    },
+    {
+      "id": "worker",
+      "split": "frozen",
+      "bm25": {
+        "recall_at_3": 0.0,
+        "reciprocal_rank": 0
+      },
+      "dense": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "hybrid": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 1.0
+      }
+    },
+    {
+      "id": "conditions",
+      "split": "frozen",
+      "bm25": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "dense": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "hybrid": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 1.0
+      }
+    },
+    {
+      "id": "snippet",
+      "split": "frozen",
+      "bm25": {
+        "recall_at_3": 0.0,
+        "reciprocal_rank": 0
+      },
+      "dense": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "hybrid": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 1.0
+      }
+    },
+    {
+      "id": "transaction",
+      "split": "frozen",
+      "bm25": {
+        "recall_at_3": 0.0,
+        "reciprocal_rank": 0
+      },
+      "dense": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "hybrid": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 1.0
+      }
+    }
+  ],
+  "summary": {
+    "dev": {
+      "bm25": {
+        "recall_at_3": 0.0,
+        "reciprocal_rank": 0.0
+      },
+      "dense": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 0.875
+      },
+      "hybrid": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 0.625
+      }
+    },
+    "frozen": {
+      "bm25": {
+        "recall_at_3": 0.25,
+        "reciprocal_rank": 0.25
+      },
+      "dense": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "hybrid": {
+        "recall_at_3": 1.0,
+        "reciprocal_rank": 1.0
+      }
+    }
+  }
+}

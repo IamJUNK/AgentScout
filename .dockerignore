@@ -1,0 +1,17 @@
+.git
+.venv*
+.env*
+__pycache__
+**/__pycache__
+**/*.pyc
+.pytest_cache
+data/*
+!data/mock_sources.json
+docs/*.docx
+docs/*QA*
+docs/*面试*
+docs/*学习*
+*.db*
+scripts/diagnose_flash.py
+node_modules
+.playwright

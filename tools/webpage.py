@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import ipaddress
 import re
 import socket
 import time
+from threading import RLock
 from collections import OrderedDict
 from typing import Iterable
 from urllib.parse import urljoin, urlsplit
@@ -14,11 +16,13 @@ from bs4 import BeautifulSoup
 from models.schemas import SearchResult, SourceDocument, as_utc_iso
 
 _PAGE_CACHE: OrderedDict[tuple, tuple[float, dict]] = OrderedDict()
+_CACHE_LOCK = RLock()
 _BLOCKED = re.compile(r"access denied|verify (?:that )?you are human|enable javascript|checking your browser|just a moment|验证码|访问被拒绝|安全验证", re.I)
 
 
 def clear_page_cache() -> None:
-    _PAGE_CACHE.clear()
+    with _CACHE_LOCK:
+        _PAGE_CACHE.clear()
 
 
 def _extract_html(html: str) -> tuple[str, str | None]:
@@ -54,7 +58,7 @@ def _check_public_host(url: str) -> None:
 
 
 def _fetch_content(url: str, timeout: float = 10, max_bytes: int = 2_000_000, deadline: float | None = None) -> dict:
-    deadline = deadline or time.monotonic() + timeout
+    deadline = min(deadline, time.monotonic() + timeout) if deadline else time.monotonic() + timeout
     with httpx.Client(timeout=timeout, follow_redirects=False, headers={"User-Agent": "AgentScout/0.2"}) as client:
         for _ in range(5):
             if time.monotonic() >= deadline:
@@ -82,7 +86,7 @@ def _fetch_content(url: str, timeout: float = 10, max_bytes: int = 2_000_000, de
                 content, published = _extract_html(decoded) if content_type != "text/plain" else (decoded, None)
                 if len(content) < 1500 and _BLOCKED.search(content):
                     raise ValueError("Verification/login/block page is not research evidence")
-                return {"content": content, "published_at": published, "retrieved_at": as_utc_iso(), "content_type": content_type, "download_truncated": truncated}
+                return {"content": content, "published_at": published, "retrieved_at": as_utc_iso(), "content_type": content_type, "download_truncated": truncated, 'final_url': url}
     raise RuntimeError("Too many redirects")
 
 
@@ -90,18 +94,22 @@ def fetch_page(item: SearchResult, timeout_seconds: float = 10, *, max_bytes: in
     base = dict(title=item.title, url=item.url, source_id=item.source_id, question_ids=item.question_ids, snippet=item.snippet, published_at=item.published_at, publication_date_source="search metadata (unverified)" if item.published_at else None)
     key = (item.url, max_bytes)
     try:
-        entry = _PAGE_CACHE.get(key)
-        hit = bool(not force_refresh and entry and time.monotonic() - entry[0] < cache_ttl)
+        with _CACHE_LOCK:
+            entry = copy.deepcopy(_PAGE_CACHE.get(key))
+            hit = bool(not force_refresh and entry and time.monotonic() - entry[0] < cache_ttl)
+            if hit: _PAGE_CACHE.move_to_end(key)
         if hit:
             data = copy.deepcopy(entry[1])
-            _PAGE_CACHE.move_to_end(key)
         else:
             data = _fetch_content(item.url, timeout_seconds, max_bytes, deadline)
             if data["content"] and not data["download_truncated"] and cache_ttl > 0:
-                _PAGE_CACHE[key] = (time.monotonic(), copy.deepcopy(data))
-                if len(_PAGE_CACHE) > 128:
-                    _PAGE_CACHE.popitem(last=False)
+                with _CACHE_LOCK:
+                    _PAGE_CACHE[key] = (time.monotonic(), copy.deepcopy(data))
+                    if len(_PAGE_CACHE) > 128:
+                        _PAGE_CACHE.popitem(last=False)
         content = data["content"]
+        base['final_url'] = data.get('final_url', item.url)
+        base['content_hash'] = hashlib.sha256(content.encode()).hexdigest()
         truncated = data["download_truncated"]
         status = ("partial" if truncated else "success") if content else ("snippet_only" if item.snippet else "failed")
         if data.get("published_at"):
